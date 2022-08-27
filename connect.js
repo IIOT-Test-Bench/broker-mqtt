@@ -5,3 +5,7 @@ const mqtt = require("mqtt");
 
 // middlewares
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
