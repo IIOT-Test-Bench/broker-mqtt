@@ -27,3 +27,7 @@ app.post("/connect", async (req, res) => {
     console.log("Connected");
   });
 });
+
+app.listen(Port, () => {
+  console.log("App Running...");
+});
