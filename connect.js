@@ -46,7 +46,6 @@ app.post("/publish", (req, res) => {
   });
 });
 
-
 // Subscribe
 app.post("/subscribe", (req, res) => {
   const { topic } = req.body;
@@ -65,6 +64,11 @@ app.post("/subscribe", (req, res) => {
     });
   });
 
+  client.on("message", (topic, message) => {
+    message = message.toString();
+    console.log(message);
+  });
+});
 
 app.listen(Port, () => {
   console.log("App Running...");
