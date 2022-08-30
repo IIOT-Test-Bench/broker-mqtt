@@ -39,6 +39,11 @@ app.post("/publish", (req, res) => {
     password: "public",
     reconnectPeriod: 1000,
   });
+
+  client.on("connect", () => {
+    client.publish(topic, message);
+    console.log("Message sent!", message);
+  });
 });
 
 app.listen(Port, () => {
