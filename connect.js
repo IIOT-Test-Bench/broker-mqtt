@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 app.post("/connect", async (req, res) => {
   const { host, port, clientId } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
-  const client = mqtt.connect(connectUrl, {
+  const client = await mqtt.connect(connectUrl, {
     clientId,
     clean: true,
     connectTimeout: 4000,
@@ -23,9 +23,9 @@ app.post("/connect", async (req, res) => {
     password: "public",
     reconnectPeriod: 1000,
   });
-  await client.on("connect", () => {
-    console.log("Connected");
-  });
+  // await client.on("connect", () => {
+  //   console.log("Connected");
+  // });
 });
 
 app.listen(Port, () => {
