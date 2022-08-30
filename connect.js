@@ -39,7 +39,7 @@ app.post("/publish", (req, res) => {
     password: "public",
     reconnectPeriod: 1000,
   });
-}
+});
 
 app.listen(Port, () => {
   console.log("App Running...");
