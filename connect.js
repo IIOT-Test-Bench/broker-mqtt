@@ -28,6 +28,19 @@ app.post("/connect", async (req, res) => {
   // });
 });
 
+// Publish
+app.post("/publish", (req, res) => {
+  const { topic, message } = req.body;
+  const client = mqtt.connect(connectUrl, {
+    clientId,
+    clean: true,
+    connectTimeout: 4000,
+    username: "emqx",
+    password: "public",
+    reconnectPeriod: 1000,
+  });
+
+
 app.listen(Port, () => {
   console.log("App Running...");
 });
