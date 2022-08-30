@@ -59,6 +59,13 @@ app.post("/subscribe", (req, res) => {
     reconnectPeriod: 1000,
   });
 
+  client.on("connect", () => {
+    client.subscribe(topic, () => {
+      console.log(`Subscribe to topic ${topic}`);
+    });
+  });
+
+
 app.listen(Port, () => {
   console.log("App Running...");
 });
