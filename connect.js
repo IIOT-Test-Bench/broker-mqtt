@@ -15,7 +15,6 @@ app.get("/", (req, res) => {
 // Post Request
 // Connection
 app.get("/connect", (req, res) => {
-  client();
   client.on("connect", () => {
     console.log(`Connected`);
   });
