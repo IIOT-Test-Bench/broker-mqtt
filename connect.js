@@ -11,6 +11,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+
+let clientobject = null;
 // Post Request
 app.post("/connect", async (req, res) => {
   const { host, port, clientId } = req.body;
@@ -23,10 +25,25 @@ app.post("/connect", async (req, res) => {
     password: "public",
     reconnectPeriod: 1000,
   });
-  // await client.on("connect", () => {
-  //   console.log("Connected");
-  // });
+  if(client){
+    clientobject = client;
+    res.send({clientId, status: "connected", msg: "Successfully Connected"})
+  }
 });
+
+//Close connection
+app.post("/disconnect", async (req, res) => {
+  const client = clientobject;
+  if(client){
+    await client.end();
+    res.send(`Client ${client.options.clientId} disconnected successfully`);
+    clientobject = null;
+  }else{
+    res.status(404).send("Sorry there was no client connection to be closed")
+  }
+  
+});
+
 
 // Publish
 app.post("/publish", (req, res) => {
