@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 
-let clientobject = null;
+let clientobject = {};
 // Post Request
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
@@ -28,19 +28,21 @@ app.post("/connect", async (req, res) => {
     password: password,
     reconnectPeriod: 1000,
   });
-  if(client){
-    clientobject = client;
+  client.on("connect", () => {
     res.send({clientId, status: "connected", msg: "Successfully Connected"})
-  }
+    clientobject[clientId] = client;
+  });
 });
 
 //Close connection
 app.post("/disconnect", async (req, res) => {
-  const client = clientobject;
+  console.log(Object.keys(clientobject));
+  const { clientId } = req.body;
+  const client = clientobject[clientId];
   if(client){
     await client.end();
     res.send(`Client ${client.options.clientId} disconnected successfully`);
-    clientobject = null;
+    delete clientobject[clientId];
   }else{
     res.status(404).send("Sorry there was no client connection to be closed")
   }
