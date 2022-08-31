@@ -86,7 +86,7 @@ app.get("/subscribe", (req, res) => {
     reconnectPeriod: 1000,
   });
   client.on("connect", function () {
-    let arr = Array(80000).fill("some string");
+    let arr = Array(800).fill("some string");
     for (let key in arr) {
       if (key > 0) {
         client.subscribe(`${key}`);
