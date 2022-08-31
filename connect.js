@@ -14,8 +14,6 @@ app.get("/", (req, res) => {
 
 // Post Request
 
-emma;
-
 app.listen(Port, () => {
   console.log("App Running...");
 });
