@@ -5,7 +5,7 @@ const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
 
 const connectUrl = `mqtt://${host}:${port}`;
 
-function client (){
+module.exports.client =  function() {
     const client = await mqtt.connect(connectUrl, {
       clientId,
       clean: true,
@@ -14,4 +14,5 @@ function client (){
       password: "public",
       reconnectPeriod: 1000,
     });
+    return client
 }
