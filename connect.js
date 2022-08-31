@@ -43,6 +43,11 @@ app.get("/disconnect", (req, res) => {
     reconnectPeriod: 1000,
   });
 
+  client.end(() => {
+    console.log(`Broker Disconnected`);
+  });
+  res.send("Broker Disconnected");
+});
 
 app.listen(Port, () => {
   console.log("App Running...");
