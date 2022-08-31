@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 // Post Request
-app.post("/connect", async (req, res) => {
+app.get("/connect", async (req, res) => {
   const { host, port, clientId } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
   const client = await mqtt.connect(connectUrl, {
@@ -23,9 +23,6 @@ app.post("/connect", async (req, res) => {
     password: "public",
     reconnectPeriod: 1000,
   });
-  // await client.on("connect", () => {
-  //   console.log("Connected");
-  // });
 });
 
 // Publish
