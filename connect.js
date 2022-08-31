@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
-const Port = process.env.PORT || 3000;
+const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
+const cors = require('cors');
+
 
 // middlewares
 app.use(express.json());
+app.use(cors({origin: true, credentials: true}));
 
 // Get Request
 app.get("/", (req, res) => {
@@ -15,14 +18,14 @@ app.get("/", (req, res) => {
 let clientobject = null;
 // Post Request
 app.post("/connect", async (req, res) => {
-  const { host, port, clientId } = req.body;
+  const { host, port, clientId, timeout, username, password } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
   const client = await mqtt.connect(connectUrl, {
     clientId,
     clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
+    connectTimeout: timeout,
+    username: username,
+    password: password,
     reconnectPeriod: 1000,
   });
   if(client){
