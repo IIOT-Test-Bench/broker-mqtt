@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const Port = process.env.PORT || 3000;
 const mqtt = require("mqtt");
-const { emma } = require("./config");
+const { client } = require("./config");
 
 // middlewares
 app.use(express.json());
@@ -13,6 +13,14 @@ app.get("/", (req, res) => {
 });
 
 // Post Request
+// Connection
+app.get("/connect", (req, res) => {
+  client();
+  client.on("connect", () => {
+    console.log(`Connected`);
+  });
+  res.send("Broker Connected!");
+});
 
 app.listen(Port, () => {
   console.log("App Running...");
