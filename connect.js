@@ -49,6 +49,18 @@ app.get("/disconnect", (req, res) => {
   res.send("Broker Disconnected");
 });
 
+
+// published
+app.get("/publish", (req, res) => {
+  const client = mqtt.connect(connectUrl, {
+    clientId,
+    clean: true,
+    connectTimeout: 4000,
+    username: "emqx",
+    password: "public",
+    reconnectPeriod: 1000,
+  });
+
 app.listen(Port, () => {
   console.log("App Running...");
 });
