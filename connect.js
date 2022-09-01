@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
-const cors = require('cors');
 
+const cors = require('cors');
 
 // middlewares
 app.use(express.json());
@@ -21,6 +21,7 @@ app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
   const client = await mqtt.connect(connectUrl, {
+
     clientId,
     clean: true,
     connectTimeout: timeout,
@@ -50,43 +51,43 @@ app.post("/disconnect", async (req, res) => {
   
 });
 
-
-// Publish
-app.post("/publish", async (req, res) => {
+    
+// published
+app.get("/publish", (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = clientobject[clientId];
 
-  try{
-    client.publish(topic, message);
-    console.log("Message sent!", message);
-    res.send("published successfully");
-  }catch(e){
-    console.log(e);
-  }
+  client.on("connect", () => {
+    setInterval(function () {
+      let arr = Array(5000000).fill("some string");
+      for (let key in arr) {
+        if (key > 0) {
+          client.publish(`${key}`);
+        }
+      }
+    }, 3000);
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    console.log(`Published Memory Usage ${Math.round(used * 100) / 100} MB`);
+  });
+  res.send("Topic Published");
 });
 
-// Subscribe
-app.post("/subscribe", async (req, res) => {
-    console.log(Object.keys(clientobject));
-    const { clientId, topic } = req.body;
-  try{
-    console.log(clientId, topic);
-    const client = clientobject[clientId];
-    console.log(client);
-    
-    client.subscribe(topic, () => {
-        console.log(`Subscribe to topic ${topic}`);
-        res.send("subscribed successfully");
-    });
-
-    // client.on("message", (topic, message) => {
-    //   message = message.toString();
-    //   console.log(message);
-    // });
-  }catch(e){
-      console.log(e);
-  }
+// subscribe
+app.get("/subscribe", (req, res) => {
+  const { clientId, topic, message } = req.body;
+  const client = clientobject[clientId];
   
+  client.on("connect", function () {
+    let arr = Array(800).fill("some string");
+    for (let key in arr) {
+      if (key > 0) {
+        client.subscribe(`${key}`);
+      }
+    }
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    console.log(`Subscribe Memory Used ${Math.round(used * 100) / 100} MB`);
+  });
+  res.send("Subscribed to Topic");
 });
 
 app.listen(Port, () => {
