@@ -52,45 +52,41 @@ app.post("/disconnect", async (req, res) => {
 
 
 // Publish
-app.post("/publish", (req, res) => {
-  const { topic, message } = req.body;
-  const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
-    reconnectPeriod: 1000,
-  });
+app.post("/publish", async (req, res) => {
+  const { clientId, topic, message } = req.body;
+  const client = clientobject[clientId];
 
-  client.on("connect", () => {
+  try{
     client.publish(topic, message);
     console.log("Message sent!", message);
-  });
+    res.send("published successfully");
+  }catch(e){
+    console.log(e);
+  }
 });
 
 // Subscribe
-app.post("/subscribe", (req, res) => {
-  const { topic } = req.body;
-  const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
-    reconnectPeriod: 1000,
-  });
-
-  client.on("connect", () => {
+app.post("/subscribe", async (req, res) => {
+    console.log(Object.keys(clientobject));
+    const { clientId, topic } = req.body;
+  try{
+    console.log(clientId, topic);
+    const client = clientobject[clientId];
+    console.log(client);
+    
     client.subscribe(topic, () => {
-      console.log(`Subscribe to topic ${topic}`);
+        console.log(`Subscribe to topic ${topic}`);
+        res.send("subscribed successfully");
     });
-  });
 
-  client.on("message", (topic, message) => {
-    message = message.toString();
-    console.log(message);
-  });
+    // client.on("message", (topic, message) => {
+    //   message = message.toString();
+    //   console.log(message);
+    // });
+  }catch(e){
+      console.log(e);
+  }
+  
 });
 
 app.listen(Port, () => {
