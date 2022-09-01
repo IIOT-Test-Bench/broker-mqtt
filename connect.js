@@ -31,18 +31,19 @@ app.post("/connect", async (req, res) => {
   client.on("connect", () => {
     res.send({clientId, status: "connected", msg: "Successfully Connected"})
     clientobject[clientId] = client;
+    console.log(Object.keys(clientobject));
   });
 });
 
 //Close connection
 app.post("/disconnect", async (req, res) => {
-  console.log(Object.keys(clientobject));
   const { clientId } = req.body;
   const client = clientobject[clientId];
-  if(client){
+  if(clientobject[clientId]){
     await client.end();
     res.send(`Client ${client.options.clientId} disconnected successfully`);
     delete clientobject[clientId];
+    console.log(Object.keys(clientobject));
   }else{
     res.status(404).send("Sorry there was no client connection to be closed")
   }
