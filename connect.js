@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-
 let clientobject = {};
+
 // Post Request
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
@@ -32,7 +32,7 @@ app.post("/connect", async (req, res) => {
   client.on("connect", () => {
     res.send({clientId, status: "connected", msg: "Successfully Connected"})
     clientobject[clientId] = client;
-    console.log(Object.keys(clientobject));
+    // console.log(clientobject);
   });
 });
 
@@ -53,43 +53,36 @@ app.post("/disconnect", async (req, res) => {
 
     
 // published
-app.get("/publish", (req, res) => {
+app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = clientobject[clientId];
 
-  client.on("connect", () => {
-    setInterval(function () {
-      let arr = Array(5000000).fill("some string");
-      for (let key in arr) {
-        if (key > 0) {
-          client.publish(`${key}`);
-        }
-      }
-    }, 3000);
-    const used = process.memoryUsage().heapUsed / 1024 / 1024;
-    console.log(`Published Memory Usage ${Math.round(used * 100) / 100} MB`);
-  });
-  res.send("Topic Published");
+  client.publish(topic, 'nodejs mqtt test', { qos: 0, retain: false }, (error) => {
+    if (error) {
+      console.error(error);
+    }else{
+      console.log("Message sent!");
+      res.send(`${topic} published`);
+    }
+  }); 
 });
 
 // subscribe
-app.get("/subscribe", (req, res) => {
-  const { clientId, topic, message } = req.body;
+app.post("/subscribe", (req, res) => {
+  const { clientId, topic } = req.body;
   const client = clientobject[clientId];
   
-  client.on("connect", function () {
-    let arr = Array(800).fill("some string");
-    for (let key in arr) {
-      if (key > 0) {
-        client.subscribe(`${key}`);
-      }
-    }
-    const used = process.memoryUsage().heapUsed / 1024 / 1024;
-    console.log(`Subscribe Memory Used ${Math.round(used * 100) / 100} MB`);
-  });
-  res.send("Subscribed to Topic");
+    client.subscribe(topic, () => {
+      console.log(`Subscribe to topic '${topic}'`);
+      res.send(`Subscribe to topic '${topic}'`)
+    });
 });
 
 app.listen(Port, () => {
   console.log("App Running...");
 });
+
+
+//Memory usage statistics
+// const used = process.memoryUsage().heapUsed / 1024 / 1024;
+// console.log(`Subscribe Memory Used ${Math.round(used * 100) / 100} MB`);
