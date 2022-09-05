@@ -46,11 +46,9 @@ app.get("/disconnect", (req, res) => {
     }catch(e){
       res.send(e);
     }
-
-  client.end(() => {
-    console.log(`Broker Disconnected`);
-  });
-  res.send("Broker Disconnected");
+  }else{
+    res.status(404).send("Sorry there was no client connection to be closed")
+  }
 });
 
 // published
