@@ -71,6 +71,10 @@ app.post("/subscribe", (req, res) => {
   const { clientId, topic } = req.body;
   let pubobj = { clientId: topic };
   const client = Client.getClient(clientId);
+  client.subscribe(topic, () => {
+    Client.addSubscribedTopic(pubobj);
+    res.send(`Subscribe to topic '${topic}'`);
+  });
 });
 
 app.listen(Port, () => {
