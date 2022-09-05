@@ -67,7 +67,9 @@ app.post("/publish", async (req, res) => {
 });
 
 // subscribe
-app.post("/subscribe", (req, res) => {});
+app.post("/subscribe", (req, res) => {
+  const { clientId, topic } = req.body;
+});
 
 app.listen(Port, () => {
   console.log("App Running...");
