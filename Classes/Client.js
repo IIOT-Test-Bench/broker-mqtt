@@ -19,4 +19,7 @@ module.exports = class Client {
     let topics = Object.values(this.publishedTopics);
     return topics;
   }
+  static addPublishedTopic(clientAndTopicObject) {
+    this.publishedTopics.push(clientAndTopicObject);
+  }
 };
