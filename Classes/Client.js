@@ -22,4 +22,9 @@ module.exports = class Client {
   static addPublishedTopic(clientAndTopicObject) {
     this.publishedTopics.push(clientAndTopicObject);
   }
+
+  static addSubscribedTopic(clientAndTopicObject) {
+    this.subscribedTopics.push(clientAndTopicObject);
+    console.log(this.subscribedTopics);
+  }
 };
