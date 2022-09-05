@@ -27,4 +27,13 @@ module.exports = class Client {
     this.subscribedTopics.push(clientAndTopicObject);
     console.log(this.subscribedTopics);
   }
+
+  static getClient(clientid) {
+    return this.clientList[clientid];
+  }
+
+  static deleteClient(clientid) {
+    delete this.clientList[clientid];
+    --this.totalClients;
+  }
 };
