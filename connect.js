@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 // Post Request
 // Connection to the broker
-app.post("/connect", (req, res) => {
+app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const client = mqtt.connect(connectUrl, {
     clientId,
@@ -36,18 +36,18 @@ app.post("/connect", (req, res) => {
 });
 
 // Disconnect
-app.get("/disconnect", (req, res) => {
-  const {clientId} = req.body;
-  if(client){
-    try{
+app.get("/disconnect", async (req, res) => {
+  const { clientId } = req.body;
+  if (client) {
+    try {
       await client.end();
       Client.deleteClient(clientId);
       res.send(`Client ${client.options.clientId} disconnected successfully`);
-    }catch(e){
+    } catch (e) {
       res.send(e);
     }
-  }else{
-    res.status(404).send("Sorry there was no client connection to be closed")
+  } else {
+    res.status(404).send("Sorry there was no client connection to be closed");
   }
 });
 
