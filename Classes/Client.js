@@ -14,4 +14,9 @@ module.exports = class Client {
   static totalClientsNumber() {
     return this.totalClients;
   }
+
+  static allPublishedTopics() {
+    let topics = Object.values(this.publishedTopics);
+    return topics;
+  }
 };
