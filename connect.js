@@ -55,6 +55,15 @@ app.post("/disconnect", async (req, res) => {
 app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = Client.getClient(clientId);
+  client.publish(topic, message, { qos: 0, retain: false }, (error) => {
+    if (error) {
+      res.send(error);
+    } else {
+      Client.addPublishedTopic({ clientId: topic });
+      console.log("Another", Client.allPublishedTopics());
+      res.send(`${topic} published`);
+    }
+  });
 });
 
 // subscribe
