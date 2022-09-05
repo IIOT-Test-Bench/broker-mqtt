@@ -8,6 +8,7 @@ const cors = require("cors");
 
 // middlewares
 app.use(express.json());
+app.use(cors({ origin: true, credentials: true }));
 
 // Get Request
 app.get("/", (req, res) => {
@@ -16,19 +17,22 @@ app.get("/", (req, res) => {
 
 // Post Request
 // Connection
-app.get("/connect", (req, res) => {
+app.post("/connect", (req, res) => {
+  const { host, port, clientId, timeout, username, password } = req.body;
   const client = mqtt.connect(connectUrl, {
     clientId,
     clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
+    connectTimeout: timeout,
+    username: username,
+    password: password,
     reconnectPeriod: 1000,
   });
   client.on("connect", () => {
-    console.log(`Connected`);
+    Client.addClient(clientId, client);
+    console.log(Client.totalClientsNumber());
+    res.send({ clientId, status: "connected", msg: "Successfully Connected" });
+    // console.log(clientobject);
   });
-  res.send("Broker Connected!");
 });
 
 // Disconnect
