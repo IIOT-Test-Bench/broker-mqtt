@@ -36,7 +36,7 @@ app.post("/connect", async (req, res) => {
 });
 
 // Disconnect
-app.get("/disconnect", async (req, res) => {
+app.post("/disconnect", async (req, res) => {
   const { clientId } = req.body;
   if (client) {
     try {
