@@ -12,7 +12,12 @@ app.use(cors({ origin: true, credentials: true }));
 
 // Get Request
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  const indexhtml = `
+            <div style="margin-top: 10em;display: flex;align-items: center;justify-content: space-evenly;">
+                <h1 style="font-size: 4em;">IIOT <span style="color:#4e73df;">Test Bench</span></h1>
+            </div>
+    `
+    res.status.send(indexhtml);
 });
 
 // Post Request
