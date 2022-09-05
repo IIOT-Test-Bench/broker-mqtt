@@ -67,27 +67,7 @@ app.post("/publish", async (req, res) => {
 });
 
 // subscribe
-app.post("/subscribe", (req, res) => {
-  const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
-    reconnectPeriod: 1000,
-  });
-  client.on("connect", function () {
-    let arr = Array(800).fill("some string");
-    for (let key in arr) {
-      if (key > 0) {
-        client.subscribe(`${key}`);
-      }
-    }
-    const used = process.memoryUsage().heapUsed / 1024 / 1024;
-    console.log(`Subscribe Memory Used ${Math.round(used * 100) / 100} MB`);
-  });
-  res.send("Subscribed to Topic");
-});
+app.post("/subscribe", (req, res) => {});
 
 app.listen(Port, () => {
   console.log("App Running...");
