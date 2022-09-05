@@ -10,4 +10,8 @@ module.exports = class Client {
     ++this.totalClients;
     console.log(this.clientList[clientId]);
   }
+
+  static totalClientsNumber() {
+    return this.totalClients;
+  }
 };
