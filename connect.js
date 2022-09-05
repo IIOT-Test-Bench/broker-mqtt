@@ -37,14 +37,15 @@ app.post("/connect", (req, res) => {
 
 // Disconnect
 app.get("/disconnect", (req, res) => {
-  const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: 4000,
-    username: "emqx",
-    password: "public",
-    reconnectPeriod: 1000,
-  });
+  const {clientId} = req.body;
+  if(client){
+    try{
+      await client.end();
+      Client.deleteClient(clientId);
+      res.send(`Client ${client.options.clientId} disconnected successfully`);
+    }catch(e){
+      res.send(e);
+    }
 
   client.end(() => {
     console.log(`Broker Disconnected`);
