@@ -67,7 +67,7 @@ app.post("/publish", async (req, res) => {
 });
 
 // subscribe
-app.get("/subscribe", (req, res) => {
+app.post("/subscribe", (req, res) => {
   const client = mqtt.connect(connectUrl, {
     clientId,
     clean: true,
