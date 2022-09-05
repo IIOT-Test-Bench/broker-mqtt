@@ -69,6 +69,8 @@ app.post("/publish", async (req, res) => {
 // subscribe
 app.post("/subscribe", (req, res) => {
   const { clientId, topic } = req.body;
+  let pubobj = { clientId: topic };
+  const client = Client.getClient(clientId);
 });
 
 app.listen(Port, () => {
