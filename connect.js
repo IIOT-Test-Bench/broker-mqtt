@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 });
 
 // Post Request
-// Connection
+// Connection to the broker
 app.post("/connect", (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const client = mqtt.connect(connectUrl, {
