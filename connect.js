@@ -8,6 +8,22 @@ const swaggerUi = require("swagger-ui-express");
 
 const cors = require("cors");
 
+// Swagger congif
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "IIoT Test Bench",
+      description: `A dashboard for showing performance and load with a very large 
+        number of messages, publishing large amounts of data via the broker and networks, 
+        persistence, security and compression of IoT data.`,
+      contact: {
+        name: "Amalitech",
+      },
+      servers: ["https://iiot-bench.herokuapp.com/"],
+    },
+  },
+  apis: ["connect.js"],
+};
 // middlewares
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
