@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
 /**
  * @swagger
  * /connect:
- * post:
+ *  post:
  *   Summary: Connection to a broker
  *   tags: [Requests]
  *   requestBody:
