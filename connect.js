@@ -69,9 +69,16 @@ app.get("/", (req, res) => {
  *   tags: [Requests]
  *   requestBody:
  *        required: true
- *        content:
- *           application/json:
+ *        consumes:
+ *           - application/json:
+ *        parameters:
+ *            -in: body
+ *              name: user
+ *              description: Connection to Create.
  *              schema:
+ *                type: object
+ *                required:
+ *                  - host
  *   responses:
  *       200:
  *         description: Connected to Broker Successfully
