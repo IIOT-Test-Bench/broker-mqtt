@@ -16,8 +16,8 @@ app.get("/", (req, res) => {
             <div style="margin-top: 10em;display: flex;align-items: center;justify-content: space-evenly;">
                 <h1 style="font-size: 4em;">IIOT <span style="color:#4e73df;">Test Bench</span></h1>
             </div>
-    `
-    res.status.send(indexhtml);
+    `;
+  res.send(indexhtml);
 });
 
 // Post Request
