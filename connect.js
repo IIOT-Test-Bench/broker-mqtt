@@ -45,6 +45,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  * /:
  *  get:
  *     description: Home Page of Server
+ *     tags: [Requests]
  *     responses:
  *        '200':
  *            description: A successful response
@@ -60,6 +61,20 @@ app.get("/", (req, res) => {
 
 // Post Request
 // Connection to the broker
+/**
+ * @swagger
+ * /connect:
+ * post:
+ *   Summary: Connection to a broker
+ *   tags: [Requests]
+ *   requestBody:
+ *        required: true
+ *        content:
+ *           application/json:
+ *   responses:
+ *       200:
+ *         description: Connected to Broker Successfully
+ */
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const client = mqtt.connect(connectUrl, {
