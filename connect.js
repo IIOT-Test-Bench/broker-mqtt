@@ -39,6 +39,21 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *  description: Api Requests
  */
 
+// Schemas
+/**
+ * @swagger
+ *  components:
+ *      schema:
+ *          Broker:
+ *            type: object
+ *            properties:
+ *                id:
+ *                     type: integer
+ *                name:
+ *                     type: string
+ *
+ */
+
 // Get Request
 /**
  * @swagger
@@ -61,28 +76,7 @@ app.get("/", (req, res) => {
 
 // Post Request
 // Connection to the broker
-/**
- * @swagger
- * /connect:
- *  post:
- *   Summary: Connection to a broker
- *   tags: [Requests]
- *   requestBody:
- *        required: true
- *        consumes:
- *           - application/json:
- *        parameters:
- *            -in: body
- *              name: user
- *              description: Connection to Create.
- *              schema:
- *                type: object
- *                required:
- *                  - host
- *   responses:
- *       200:
- *         description: Connected to Broker Successfully
- */
+
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const client = mqtt.connect(connectUrl, {
