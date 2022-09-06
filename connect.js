@@ -24,9 +24,13 @@ const swaggerOptions = {
   },
   apis: ["connect.js"],
 };
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 // middlewares
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Get Request
 app.get("/", (req, res) => {
