@@ -19,7 +19,7 @@ const swaggerOptions = {
       contact: {
         name: "Amalitech",
       },
-      servers: ["https://iiot-bench.herokuapp.com/"],
+      servers: ["http://localhost:3000"],
     },
   },
   apis: ["connect.js"],
