@@ -32,6 +32,13 @@ app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+/**
+ * @swagger
+ * tags:
+ *  name: Requests
+ *  description: Api Requests
+ */
+
 // Get Request
 /**
  * @swagger
