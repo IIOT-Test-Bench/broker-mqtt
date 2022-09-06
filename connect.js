@@ -33,6 +33,15 @@ app.use(cors({ origin: true, credentials: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Get Request
+/**
+ * @swagger
+ * /:
+ *  get:
+ *     description: Home Page of Server
+ *     responses:
+ *        '200':
+ *            description: A successful response
+ */
 app.get("/", (req, res) => {
   const indexhtml = `
             <div style="margin-top: 10em;display: flex;align-items: center;justify-content: space-evenly;">
