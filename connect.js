@@ -39,21 +39,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *  description: Api Requests
  */
 
-// Schemas
-/**
- * @swagger
- *  components:
- *      schema:
- *          Broker:
- *            type: object
- *            properties:
- *                id:
- *                     type: integer
- *                name:
- *                     type: string
- *
- */
-
 // Get Request
 /**
  * @swagger
