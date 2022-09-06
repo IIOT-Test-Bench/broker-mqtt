@@ -71,6 +71,7 @@ app.get("/", (req, res) => {
  *        required: true
  *        content:
  *           application/json:
+ *              schema:
  *   responses:
  *       200:
  *         description: Connected to Broker Successfully
