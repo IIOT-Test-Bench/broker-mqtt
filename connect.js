@@ -3,6 +3,8 @@ const app = express();
 const Port = process.env.PORT || 3000;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const cors = require("cors");
 
