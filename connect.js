@@ -64,6 +64,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *    password:
  *     type: string
  *     example: "public"
+ *   required:
+ *     - host
+ *     - port
+ *     - clientId
+ *     - timeout
+ *     - username
+ *     - password
  */
 
 // Get Request
@@ -88,7 +95,28 @@ app.get("/", (req, res) => {
 
 // Post Request
 // Connection to the broker
-
+/**
+ * @swagger
+ * /connect:
+ *  post:
+ *    summary: Connect to Broker
+ *    description: Connect to Broker with parameters
+ *    parameters:
+ *      - in: body
+ *        host: body
+ *        schema:
+ *           $ref: '#definitions/Broker'
+ *    requestBody:
+ *      content:
+ *       application/json:
+ *          schema:
+ *           $ref: '#/definitions/Broker'
+ *    responses:
+ *      200:
+ *        description: Connected to Broker Successfully
+ *      500:
+ *        description: Failed to connect to Broker
+ */
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
@@ -104,7 +132,7 @@ app.post("/connect", async (req, res) => {
     Client.addClient(clientId, client);
     console.log(Client.totalClientsNumber());
     res.send({ clientId, status: "connected", msg: "Successfully Connected" });
-    // console.log(clientobject);
+    console.log(clientobject);
   });
 });
 
