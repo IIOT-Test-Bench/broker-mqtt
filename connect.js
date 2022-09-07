@@ -184,7 +184,7 @@ app.post("/connect", async (req, res) => {
  *    parameters:
  *        clientId: body
  *        schema:
- *           $ref: '#definitions/Broker'
+ *           $ref: '#definitions/Disconnect'
  *    requestBody:
  *      content:
  *       application/json:
@@ -212,7 +212,27 @@ app.post("/disconnect", async (req, res) => {
 });
 
 // published
-
+/**
+ * @swagger
+ * /publish:
+ *  post:
+ *    summary: Disconnect Broker
+ *    description: Disconnect to Broker
+ *    parameters:
+ *        clientId: body
+ *        schema:
+ *           $ref: '#definitions/publish'
+ *    requestBody:
+ *      content:
+ *       application/json:
+ *          schema:
+ *           $ref: '#/definitions/publish'
+ *    responses:
+ *      200:
+ *        description: Connected to Broker Successfully
+ *      500:
+ *        description: Failed to connect to Broker
+ */
 app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = Client.getClient(clientId);
