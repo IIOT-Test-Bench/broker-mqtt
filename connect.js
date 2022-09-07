@@ -106,6 +106,23 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *     - message
  */
 
+// Subscriber
+/**
+ * @swagger
+ * definitions:
+ *  publish:
+ *   type: object
+ *   properties:
+ *    clientId:
+ *     type: string
+ *     example: "mqtt_a6086a790b02"
+ *    topic:
+ *     type: string
+ *   required:
+ *     - clientId
+ *     - topic
+ */
+
 // Get Request
 /**
  * @swagger
