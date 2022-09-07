@@ -39,6 +39,33 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *  description: Api Requests
  */
 
+// Deffs
+/**
+ * @swagger
+ * definitions:
+ *  Broker:
+ *   type: object
+ *   properties:
+ *    host:
+ *     type: string
+ *     example: "broker.emqx.io"
+ *    port:
+ *     type: string
+ *     example: "1883"
+ *    clientId:
+ *     type: string
+ *     example: "mqtt_a6086a790b02"
+ *    timeout:
+ *     type: string
+ *     example: "4000"
+ *    username:
+ *     type: string
+ *     example: "emqx"
+ *    password:
+ *     type: string
+ *     example: "public"
+ */
+
 // Get Request
 /**
  * @swagger
@@ -64,6 +91,7 @@ app.get("/", (req, res) => {
 
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
+  const connectUrl = `mqtt://${host}:${port}`;
   const client = mqtt.connect(connectUrl, {
     clientId,
     clean: true,
