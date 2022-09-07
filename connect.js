@@ -79,7 +79,21 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *  Disconnect:
  *   type: object
  *   properties:
- *    host:
+ *    clientId:
+ *     type: string
+ *     example: "mqtt_a6086a790b02"
+ *   required:
+ *     - clientId
+ */
+
+// Publisher
+/**
+ * @swagger
+ * definitions:
+ *  publish:
+ *   type: object
+ *   properties:
+ *    :
  *     type: string
  *     example: "broker.emqx.io"
  *    port:
@@ -105,6 +119,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *     - username
  *     - password
  */
+
 // Get Request
 /**
  * @swagger
@@ -126,7 +141,7 @@ app.get("/", (req, res) => {
 });
 
 // Post Request
-// Connection to the broker
+// Connection to the broke
 /**
  * @swagger
  * /connect:
@@ -188,7 +203,7 @@ app.post("/connect", async (req, res) => {
  *      content:
  *       application/json:
  *          schema:
- *           $ref: '#/definitions/Broker'
+ *           $ref: '#/definitions/Disconnect'
  *    responses:
  *      200:
  *        description: Connected to Broker Successfully
