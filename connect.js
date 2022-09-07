@@ -151,6 +151,7 @@ app.get("/", (req, res) => {
  *  post:
  *    summary: Connect to Broker
  *    description: Connect to Broker with parameters
+ *    tags: [Requests]
  *    parameters:
  *      - in: body
  *        host: body
@@ -198,6 +199,7 @@ app.post("/connect", async (req, res) => {
  *  post:
  *    summary: Disconnect Broker
  *    description: Disconnect to Broker
+ *    tags: [Requests]
  *    parameters:
  *        clientId: body
  *        schema:
@@ -235,6 +237,7 @@ app.post("/disconnect", async (req, res) => {
  *  post:
  *    summary: Publish Topic
  *    description: Publish topic and messages
+ *    tags: [Requests]
  *    parameters:
  *        clientId: body
  *        schema:
@@ -271,6 +274,7 @@ app.post("/publish", async (req, res) => {
  *  post:
  *    summary: Subscribe Topic
  *    description: Subscribe topic
+ *    tags: [Requests]
  *    parameters:
  *        clientId: body
  *        schema:
