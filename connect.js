@@ -216,8 +216,8 @@ app.post("/disconnect", async (req, res) => {
  * @swagger
  * /publish:
  *  post:
- *    summary: Disconnect Broker
- *    description: Disconnect to Broker
+ *    summary: Publish Topic
+ *    description: Publish topic and messages
  *    parameters:
  *        clientId: body
  *        schema:
