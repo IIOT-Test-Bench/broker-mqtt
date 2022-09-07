@@ -110,7 +110,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 /**
  * @swagger
  * definitions:
- *  publish:
+ *  subscribe:
  *   type: object
  *   properties:
  *    clientId:
@@ -267,19 +267,19 @@ app.post("/publish", async (req, res) => {
 // subscribe
 /**
  * @swagger
- * /publish:
+ * /subscribe:
  *  post:
- *    summary: Publish Topic
- *    description: Publish topic and messages
+ *    summary: Subscribe Topic
+ *    description: Subscribe topic
  *    parameters:
  *        clientId: body
  *        schema:
- *           $ref: '#definitions/publish'
+ *           $ref: '#definitions/subscribe'
  *    requestBody:
  *      content:
  *       application/json:
  *          schema:
- *           $ref: '#/definitions/publish'
+ *           $ref: '#/definitions/subscribe'
  *    responses:
  *      200:
  *        description: Connected to Broker Successfully
