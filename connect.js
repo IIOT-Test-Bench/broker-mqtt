@@ -19,7 +19,7 @@ const swaggerOptions = {
       contact: {
         name: "Amalitech",
       },
-      servers: ["http://localhost:3000"],
+      servers: ["https://iiot-bench.herokuapp.com/"],
     },
   },
   apis: ["connect.js"],
@@ -73,6 +73,38 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *     - password
  */
 
+/**
+ * @swagger
+ * definitions:
+ *  Disconnect:
+ *   type: object
+ *   properties:
+ *    host:
+ *     type: string
+ *     example: "broker.emqx.io"
+ *    port:
+ *     type: string
+ *     example: "1883"
+ *    clientId:
+ *     type: string
+ *     example: "mqtt_a6086a790b02"
+ *    timeout:
+ *     type: string
+ *     example: "4000"
+ *    username:
+ *     type: string
+ *     example: "emqx"
+ *    password:
+ *     type: string
+ *     example: "public"
+ *   required:
+ *     - host
+ *     - port
+ *     - clientId
+ *     - timeout
+ *     - username
+ *     - password
+ */
 // Get Request
 /**
  * @swagger
@@ -104,6 +136,11 @@ app.get("/", (req, res) => {
  *    parameters:
  *      - in: body
  *        host: body
+ *        port: body
+ *        clientId: body
+ *        timeout: body
+ *        username: body
+ *        password: body
  *        schema:
  *           $ref: '#definitions/Broker'
  *    requestBody:
@@ -137,6 +174,27 @@ app.post("/connect", async (req, res) => {
 });
 
 // Disconnect
+/**
+ * @swagger
+ * /disconnect:
+ *  post:
+ *    summary: Disconnect Broker
+ *    description: Disconnect to Broker
+ *    parameters:
+ *        clientId: body
+ *        schema:
+ *           $ref: '#definitions/Broker'
+ *    requestBody:
+ *      content:
+ *       application/json:
+ *          schema:
+ *           $ref: '#/definitions/Broker'
+ *    responses:
+ *      200:
+ *        description: Connected to Broker Successfully
+ *      500:
+ *        description: Failed to connect to Broker
+ */
 app.post("/disconnect", async (req, res) => {
   const { clientId } = req.body;
   if (client) {
