@@ -265,6 +265,27 @@ app.post("/publish", async (req, res) => {
 });
 
 // subscribe
+/**
+ * @swagger
+ * /publish:
+ *  post:
+ *    summary: Publish Topic
+ *    description: Publish topic and messages
+ *    parameters:
+ *        clientId: body
+ *        schema:
+ *           $ref: '#definitions/publish'
+ *    requestBody:
+ *      content:
+ *       application/json:
+ *          schema:
+ *           $ref: '#/definitions/publish'
+ *    responses:
+ *      200:
+ *        description: Connected to Broker Successfully
+ *      500:
+ *        description: Failed to connect to Broker
+ */
 app.post("/subscribe", (req, res) => {
   const { clientId, topic } = req.body;
   let pubobj = { clientId: topic };
