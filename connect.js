@@ -93,31 +93,17 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  *  publish:
  *   type: object
  *   properties:
- *    :
- *     type: string
- *     example: "broker.emqx.io"
- *    port:
- *     type: string
- *     example: "1883"
  *    clientId:
  *     type: string
  *     example: "mqtt_a6086a790b02"
- *    timeout:
+ *    topic:
  *     type: string
- *     example: "4000"
- *    username:
+ *    message:
  *     type: string
- *     example: "emqx"
- *    password:
- *     type: string
- *     example: "public"
  *   required:
- *     - host
- *     - port
  *     - clientId
- *     - timeout
- *     - username
- *     - password
+ *     - topic
+ *     - message
  */
 
 // Get Request
@@ -226,6 +212,7 @@ app.post("/disconnect", async (req, res) => {
 });
 
 // published
+
 app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = Client.getClient(clientId);
