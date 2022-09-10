@@ -1,10 +1,18 @@
 const express = require("express");
 const app = express();
-const Port = process.env.PORT || 3000;
+const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const WebSocket = require("ws");
+const server = require('http').createServer();
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true
+  }
+});
 
 const cors = require("cors");
 
@@ -185,10 +193,9 @@ app.post("/connect", async (req, res) => {
     reconnectPeriod: 1000,
   });
   client.on("connect", () => {
-    Client.addClient(clientId, client);
+    new Client(clientId, client);
     console.log(Client.totalClientsNumber());
     res.send({ clientId, status: "connected", msg: "Successfully Connected" });
-    console.log(clientobject);
   });
 });
 
@@ -217,11 +224,12 @@ app.post("/connect", async (req, res) => {
  */
 app.post("/disconnect", async (req, res) => {
   const { clientId } = req.body;
+  const client = Client.getClient(clientId);
   if (client) {
     try {
       await client.end();
       Client.deleteClient(clientId);
-      res.send(`Client ${client.options.clientId} disconnected successfully`);
+      res.send(`Client ${client.options.cliwsentId} disconnected successfully`);
     } catch (e) {
       res.send(e);
     }
@@ -299,6 +307,43 @@ app.post("/subscribe", (req, res) => {
     res.send(`Subscribe to topic '${topic}'`);
   });
 });
+
+//
+app.post("/simulate", (req, res) => {
+  const { clientId, topic } = req.body;
+  let pubobj = { clientId: topic };
+  const client = Client.getClient(clientId);
+  
+  const socketConn = WebSocket.Server({port: "7075"});  
+  const socketClients = new Map();
+
+  socketConn.on('connection', (ws) => {
+    const id = uuidv4();
+    const message = `Welcome, test message `;
+    const metadata = { id, color };
+
+    socketClients.set(ws, metadata);
+  });
+
+});
+
+
+io.on('connection', client => {
+  client.on('testing', data => { 
+    console.log("A messsage"+data);
+   });
+  client.on('disconnect', () => { 
+    console.log("Disconnect")
+   });
+   setInterval(() => {
+    client.emit("yello", "Let's some messages...");
+    client.emit(process.memoryUsage().heapUsed / 1024 / 1024);
+   }, 2000)
+   
+});
+server.listen(3042);
+
+
 
 app.listen(Port, () => {
   console.log("App Running...");
