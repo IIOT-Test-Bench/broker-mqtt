@@ -310,39 +310,24 @@ app.post("/subscribe", (req, res) => {
 
 //
 app.post("/simulate", (req, res) => {
-  const { clientId, topic } = req.body;
-  let pubobj = { clientId: topic };
+  const { clientId } = req.body;
   const client = Client.getClient(clientId);
-  
-  const socketConn = WebSocket.Server({port: "7075"});  
-  const socketClients = new Map();
 
-  socketConn.on('connection', (ws) => {
-    const id = uuidv4();
-    const message = `Welcome, test message `;
-    const metadata = { id, color };
-
-    socketClients.set(ws, metadata);
+  io.on('connection', client => {
+    client.on('testing', data => { 
+      console.log("A messsage"+data);
+     });
+    client.on('disconnect', () => { 
+      console.log("Disconnect")
+     });
+     setInterval(() => {
+      client.emit("memory-usage", `${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
+      client.emit("cpu-usage", `${process.cpuUsage().system}`);
+     }, 2000)
+     
   });
-
+  server.listen(3042);
 });
-
-
-io.on('connection', client => {
-  client.on('testing', data => { 
-    console.log("A messsage"+data);
-   });
-  client.on('disconnect', () => { 
-    console.log("Disconnect")
-   });
-   setInterval(() => {
-    client.emit("yello", "Let's some messages...");
-    client.emit(process.memoryUsage().heapUsed / 1024 / 1024);
-   }, 2000)
-   
-});
-server.listen(3042);
-
 
 
 app.listen(Port, () => {
