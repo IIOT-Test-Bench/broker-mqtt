@@ -101,7 +101,6 @@ app.post("/subscribe", (req, res) => {
       console.log("Received client Id: "+data);
       const client = Client.getClient(data);
       console.log(client);
-
      });
     client.on('disconnect', () => { 
       console.log("User Disconnected")
