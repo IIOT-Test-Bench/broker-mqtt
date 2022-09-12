@@ -5,8 +5,9 @@ const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const WebSocket = require("ws");
 const server = require('http').createServer();
+
+//Setup socket io on server
 const io = require('socket.io')(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -93,18 +94,20 @@ app.post("/subscribe", (req, res) => {
   });
 });
 
+
 //Simulation with websockets
 
   io.on('connection', client => {
     client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"})
     client.on('clientId', data => { 
-      console.log("Received client Id: "+data);
+      console.log("Received client Id: " + data);
       const client = Client.getClient(data);
       console.log(client);
      });
     client.on('disconnect', () => { 
       console.log("User Disconnected")
      });
+     //send sample statistics
      setInterval(() => {
       client.emit("memory-usage", `${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
       client.emit("cpu-usage", `${process.cpuUsage().system}`);

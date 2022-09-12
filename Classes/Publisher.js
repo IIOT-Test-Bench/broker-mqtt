@@ -20,7 +20,7 @@ class Publisher {
     }
 }
 
-let range = 5
+let range = 10
 let samplePubs = new Array(range);
 for(let i=0; i<range; i++){
     samplePubs[i] = new Publisher(`Publ ${i}`, 1);
