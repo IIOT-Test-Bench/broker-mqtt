@@ -3,15 +3,15 @@ const Client = require("./Client");
 module.exports = class Publisher {
 
     //Set time in seconds
-    constructor(publisherName, interval){
+    constructor(publisherName, interval, clientId, topicLvl){
         this.publisherName = publisherName;
         this.interval = interval;
-        this.intervalId = this.startPublishing(publisherName, interval);
+        this.intervalId = this.startPublishing(publisherName, interval, clientId, topicLvl);
     }
 
-    startPublishing(publisherName, interval) {
+    startPublishing(publisherName, interval, clientId, topicLvl) {
         let intervalId = setInterval(() => {
-            console.log(`${publisherName} - ${intervalId}: Checking test`);
+            console.log(`${publisherName} - ${intervalId}: ${this.publishTopic(clientId, topicLvl)}`);
         }, interval * 1000);
         console.log("Started");
         return intervalId;
@@ -21,15 +21,17 @@ module.exports = class Publisher {
         clearInterval(intervalId)
     }
 
-    publishTopic(){
+    publishTopic(clientId, topicLevel){
         const client = Client.getClient(clientId);
+        const topic = "aaaabb";
+        const message = "Lets test the publish";
+        console.log("mmmmmmmmm",Client.allPublishedTopics());
         client.publish(topic, message, { qos: 0, retain: false }, (error) => {
             if (error) {
-            res.send(error);
+                console.log(error);
             } else {
-            Client.addPublishedTopic({ clientId: topic });
+            Client.addPublishedTopic([ clientId, topic ]);
             console.log("Another", Client.allPublishedTopics());
-            res.send(`${topic} published`);
             }
         });
     }

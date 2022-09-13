@@ -23,7 +23,10 @@ module.exports = class Client {
   }
 
   static allPublishedTopics() {
-    let topics = Object.values(this.publishedTopics);
+    let topics = [];
+    for(let elem of this.publishedTopics){
+      topics.push(elem[1]);
+    }
     return topics;
   }
   static addPublishedTopic(clientAndTopicObject) {

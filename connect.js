@@ -92,13 +92,15 @@ app.post("/subscribe", (req, res) => {
 });
 
 //Simulation with websockets
-
   io.on('connection', client => {
+
+    let clientId = null;
+
     client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"});
     client.on('clientId', data => { 
       console.log("Received client Id: " + data);
-      const client = Client.getClient(data);
-      console.log(client);
+      // const client = Client.getClient(data);
+      clientId = data;
      });
 
      let samplePubs = null;
@@ -108,7 +110,7 @@ app.post("/subscribe", (req, res) => {
       let range = 10
       samplePubs = new Array(range);
       for(let i=0; i<range; i++){
-        samplePubs[i] = new Publisher(`Publ ${i}`, 1);
+        samplePubs[i] = new Publisher(`Publ ${i}`, 1, clientId, 3);
       }
       //send sample statistics
      setInterval(() => {
@@ -119,7 +121,6 @@ app.post("/subscribe", (req, res) => {
 
 
     client.on('stopSimulation', (data) => {
-      console.log(samplePubs);
       const {numOfPubs} = data;
       console.log(numOfPubs)
 
