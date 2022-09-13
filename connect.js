@@ -6,24 +6,23 @@ const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require('http').createServer();
+const server = require("http").createServer();
+const osu = require("node-os-utils");
+require("loadavg-windows");
 
 //Setup socket io on server
-const io = require('socket.io')(server, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 const cors = require("cors");
 
-
 // middlewares
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
-
-
 
 app.get("/", (req, res) => {
   const indexhtml = `
@@ -52,7 +51,6 @@ app.post("/connect", async (req, res) => {
   });
 });
 
-
 app.post("/disconnect", async (req, res) => {
   const { clientId } = req.body;
   const client = Client.getClient(clientId);
@@ -69,7 +67,6 @@ app.post("/disconnect", async (req, res) => {
   }
 });
 
-
 app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = Client.getClient(clientId);
@@ -84,7 +81,6 @@ app.post("/publish", async (req, res) => {
   });
 });
 
-
 app.post("/subscribe", (req, res) => {
   const { clientId, topic } = req.body;
   let pubobj = { clientId: topic };
@@ -95,47 +91,49 @@ app.post("/subscribe", (req, res) => {
   });
 });
 
-
 //Simulation with websockets
 
-  io.on('connection', client => {
-    client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"});
-    client.on('clientId', data => { 
-      console.log("Received client Id: " + data);
-      const client = Client.getClient(data);
-      console.log(client);
-     });
-
-     let samplePubs = new Array(range);
-
-     client.on('startSimulation', () => {
-      let range = 10
-      for(let i=0; i<range; i++){
-        samplePubs[i] = new Publisher(`Publ ${i}`, 1);
-      }
-     })
-
-
-    client.on('stopSimulation', () => {
-        for(let i=0; i<range; i++){
-            samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-            // console.log(samplePubs[i].intervalId);
-        }
-    })
-
-    client.on('disconnect', () => { 
-      console.log("User Disconnected");
-     });
-     //send sample statistics
-     setInterval(() => {
-      client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
-      client.emit("cpu-usage", `${process.cpuUsage().system}`);
-     }, 2000)
-     
+io.on("connection", (client) => {
+  client.emit("connectionStatus", {
+    isConnected: true,
+    status: "connected",
+    msg: "User connected",
   });
-  server.listen(3042);
+  client.on("clientId", (data) => {
+    console.log("Received client Id: " + data);
+    const client = Client.getClient(data);
+    console.log(client);
+  });
 
+  let samplePubs = new Array(range);
 
+  client.on("startSimulation", () => {
+    let range = 10;
+    for (let i = 0; i < range; i++) {
+      samplePubs[i] = new Publisher(`Publ ${i}`, 1);
+    }
+  });
+
+  client.on("stopSimulation", () => {
+    for (let i = 0; i < range; i++) {
+      samplePubs[i].stopPublishing(samplePubs[i].intervalId);
+      // console.log(samplePubs[i].intervalId);
+    }
+  });
+
+  client.on("disconnect", () => {
+    console.log("User Disconnected");
+  });
+  //send sample statistics
+  setInterval(() => {
+    client.emit(
+      "memory-usage",
+      `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`
+    );
+    client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
+  }, 2000);
+});
+server.listen(3042);
 
 app.listen(Port, () => {
   console.log("App Running...");
