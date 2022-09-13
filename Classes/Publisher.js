@@ -1,4 +1,4 @@
-class Publisher {
+module.exports = class Publisher {
 
     //Set time in seconds
     constructor(publisherName, interval){
@@ -20,16 +20,5 @@ class Publisher {
     }
 }
 
-let range = 10
-let samplePubs = new Array(range);
-for(let i=0; i<range; i++){
-    samplePubs[i] = new Publisher(`Publ ${i}`, 1);
-}
 
-setTimeout(() => {
-    for(let i=0; i<range; i++){
-        samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-        // console.log(samplePubs[i].intervalId);
-    }
-}, 5000);
 // let samplePub2 = new Publisher("Publ2", 1);

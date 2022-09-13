@@ -3,6 +3,7 @@ const app = express();
 const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
+const Publisher = require("./Classes/Publisher");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const server = require('http').createServer();
@@ -98,18 +99,36 @@ app.post("/subscribe", (req, res) => {
 //Simulation with websockets
 
   io.on('connection', client => {
-    client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"})
+    client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"});
     client.on('clientId', data => { 
       console.log("Received client Id: " + data);
       const client = Client.getClient(data);
       console.log(client);
      });
+
+     let samplePubs = new Array(range);
+
+     client.on('startSimulation', () => {
+      let range = 10
+      for(let i=0; i<range; i++){
+        samplePubs[i] = new Publisher(`Publ ${i}`, 1);
+      }
+     })
+
+
+    client.on('stopSimulation', () => {
+        for(let i=0; i<range; i++){
+            samplePubs[i].stopPublishing(samplePubs[i].intervalId);
+            // console.log(samplePubs[i].intervalId);
+        }
+    })
+
     client.on('disconnect', () => { 
-      console.log("User Disconnected")
+      console.log("User Disconnected");
      });
      //send sample statistics
      setInterval(() => {
-      client.emit("memory-usage", `${process.memoryUsage().heapUsed / 1024 / 1024} MB`);
+      client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
       client.emit("cpu-usage", `${process.cpuUsage().system}`);
      }, 2000)
      
