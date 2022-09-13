@@ -93,45 +93,49 @@ app.post("/subscribe", (req, res) => {
 
 //Simulation with websockets
 
-io.on("connection", (client) => {
-  client.emit("connectionStatus", {
-    isConnected: true,
-    status: "connected",
-    msg: "User connected",
-  });
-  client.on("clientId", (data) => {
-    console.log("Received client Id: " + data);
-    const client = Client.getClient(data);
-    console.log(client);
-  });
+  io.on('connection', client => {
+    client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"});
+    client.on('clientId', data => { 
+      console.log("Received client Id: " + data);
+      const client = Client.getClient(data);
+      console.log(client);
+     });
 
-  let samplePubs = new Array(range);
+     let samplePubs = null;
 
-  client.on("startSimulation", () => {
-    let range = 10;
-    for (let i = 0; i < range; i++) {
-      samplePubs[i] = new Publisher(`Publ ${i}`, 1);
-    }
-  });
+     client.on('startSimulation', (data) => {
+      const {numOfPubs, interval, topicLevel} = data;
+      let range = 10
+      samplePubs = new Array(range);
+      for(let i=0; i<range; i++){
+        samplePubs[i] = new Publisher(`Publ ${i}`, 1);
+      }
+      //send sample statistics
+     setInterval(() => {
+      client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
+      client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
+     }, 2000)
+     })
 
-  client.on("stopSimulation", () => {
-    for (let i = 0; i < range; i++) {
-      samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-      // console.log(samplePubs[i].intervalId);
-    }
-  });
 
-  client.on("disconnect", () => {
-    console.log("User Disconnected");
-  });
-  //send sample statistics
-  setInterval(() => {
-    client.emit(
-      "memory-usage",
-      `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`
-    );
-    client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
-  }, 2000);
+    client.on('stopSimulation', (data) => {
+      console.log(samplePubs);
+      const {numOfPubs} = data;
+      console.log(numOfPubs)
+
+        if(samplePubs !== null){
+          for(let i=0; i<numOfPubs; i++){
+            samplePubs[i].stopPublishing(samplePubs[i].intervalId);
+            // console.log(samplePubs[i].intervalId);
+            }
+        }else{
+          console.log("errror")
+        }
+    })
+
+    client.on('disconnect', () => { 
+      console.log("User Disconnected");
+     });
 });
 server.listen(3042);
 
