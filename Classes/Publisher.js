@@ -1,3 +1,5 @@
+const Client = require("./Client");
+
 module.exports = class Publisher {
 
     //Set time in seconds
@@ -17,6 +19,19 @@ module.exports = class Publisher {
 
     stopPublishing(intervalId) {
         clearInterval(intervalId)
+    }
+
+    publishTopic(){
+        const client = Client.getClient(clientId);
+        client.publish(topic, message, { qos: 0, retain: false }, (error) => {
+            if (error) {
+            res.send(error);
+            } else {
+            Client.addPublishedTopic({ clientId: topic });
+            console.log("Another", Client.allPublishedTopics());
+            res.send(`${topic} published`);
+            }
+        });
     }
 }
 

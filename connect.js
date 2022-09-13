@@ -113,7 +113,7 @@ app.post("/subscribe", (req, res) => {
       //send sample statistics
      setInterval(() => {
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
-      client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
+      client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
      }, 2000)
      })
 
