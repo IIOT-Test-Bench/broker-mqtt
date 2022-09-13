@@ -6,24 +6,23 @@ const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require('http').createServer();
+const server = require("http").createServer();
+const osu = require("node-os-utils");
+require("loadavg-windows");
 
 //Setup socket io on server
-const io = require('socket.io')(server, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 const cors = require("cors");
 
-
 // middlewares
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
-
-
 
 app.get("/", (req, res) => {
   const indexhtml = `
@@ -52,7 +51,6 @@ app.post("/connect", async (req, res) => {
   });
 });
 
-
 app.post("/disconnect", async (req, res) => {
   const { clientId } = req.body;
   const client = Client.getClient(clientId);
@@ -69,7 +67,6 @@ app.post("/disconnect", async (req, res) => {
   }
 });
 
-
 app.post("/publish", async (req, res) => {
   const { clientId, topic, message } = req.body;
   const client = Client.getClient(clientId);
@@ -84,7 +81,6 @@ app.post("/publish", async (req, res) => {
   });
 });
 
-
 app.post("/subscribe", (req, res) => {
   const { clientId, topic } = req.body;
   let pubobj = { clientId: topic };
@@ -94,7 +90,6 @@ app.post("/subscribe", (req, res) => {
     res.send(`Subscribe to topic '${topic}'`);
   });
 });
-
 
 //Simulation with websockets
 
@@ -118,7 +113,7 @@ app.post("/subscribe", (req, res) => {
       //send sample statistics
      setInterval(() => {
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
-      client.emit("cpu-usage", `${process.cpuUsage().system}`);
+      client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
      }, 2000)
      })
 
@@ -141,12 +136,8 @@ app.post("/subscribe", (req, res) => {
     client.on('disconnect', () => { 
       console.log("User Disconnected");
      });
-     
-     
-  });
-  server.listen(3042);
-
-
+});
+server.listen(3042);
 
 app.listen(Port, () => {
   console.log("App Running...");
