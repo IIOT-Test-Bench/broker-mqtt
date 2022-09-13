@@ -18,5 +18,4 @@ const getRandomNumber = (min, max) => {
 
 module.exports = {generateID, getRandomNumber}
 
-console.log(getRandomNumber(40, 50));
-console.log(generateID(5));
+

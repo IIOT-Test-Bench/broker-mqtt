@@ -25,7 +25,9 @@ module.exports = class Client {
   static allPublishedTopics() {
     let topics = [];
     for(let elem of this.publishedTopics){
-      topics.push(elem[1]);
+      if(!topics.includes(elem[1])){
+        topics.push(elem[1]);
+      }
     }
     return topics;
   }

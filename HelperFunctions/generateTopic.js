@@ -1,7 +1,7 @@
 const {generateID} = require("./generateClientId");
 // import generateID from "./generateClientId";
 
-module.exports = generateTopic = (topicLen, topicLvl) => {
+const generateTopic = (topicLen, topicLvl) => {
     let initialStr = generateID(topicLen);
     for(let i=0; i<topicLvl; i++){
         initialStr += `/${generateID(topicLen)}`;
@@ -10,5 +10,4 @@ module.exports = generateTopic = (topicLen, topicLvl) => {
 }
 
 
-
-console.log(generateTopic(4,3));
+module.exports = {generateTopic};

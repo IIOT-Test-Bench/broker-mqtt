@@ -13,7 +13,7 @@ const client = mqtt.connect(connectUrl, {
   reconnectPeriod: 1000,
 });
 
-const topic = "aaaabb";
+const topic = "iewi/mwff/gypn";
 client.on("connect", () => {
   console.log("Connected");
   client.subscribe([topic], () => {

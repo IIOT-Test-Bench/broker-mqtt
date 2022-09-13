@@ -4,6 +4,7 @@ const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
+const {generateTopic} = require("./HelperFunctions/generateTopic");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const server = require("http").createServer();
@@ -107,10 +108,11 @@ app.post("/subscribe", (req, res) => {
 
      client.on('startSimulation', (data) => {
       const {numOfPubs, interval, topicLevel} = data;
-      let range = 10
+      let range = numOfPubs //Number of publishers
       samplePubs = new Array(range);
       for(let i=0; i<range; i++){
-        samplePubs[i] = new Publisher(`Publ ${i}`, 1, clientId, 3);
+        let pubTopic = generateTopic(4, topicLevel);
+        samplePubs[i] = new Publisher(`Publ ${i}`, interval, clientId, pubTopic);
       }
       //send sample statistics
      setInterval(() => {
