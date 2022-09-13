@@ -4,11 +4,18 @@ module.exports = class Client {
   static publishedTopics = [];
   static subscribedTopics = [];
 
+  constructor(clientid, clientobj){
+    this.id = clientid;
+    this.obj = clientobj;
+
+    this.addClient(this.id, this.obj);
+  }
+
   //Add a new connected client
-  static addClient(clientId, clientObj) {
-    this.clientList[clientId] = clientObj;
-    ++this.totalClients;
-    console.log(this.clientList[clientId]);
+  addClient(clientId, clientObj) {
+    this.constructor.clientList[clientId] = clientObj;
+    ++this.constructor.totalClients;
+    console.log(this.constructor);
   }
 
   static totalClientsNumber() {
