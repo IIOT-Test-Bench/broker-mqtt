@@ -118,22 +118,20 @@ app.post("/subscribe", (req, res) => {
      setInterval(() => {
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
       client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
+      client.emit("sent", `${Client.messageCount[clientId]} `);
      }, 2000)
      })
 
 
     client.on('stopSimulation', (data) => {
       const {numOfPubs} = data;
-      console.log(numOfPubs)
-
-        if(samplePubs !== null){
+        
           for(let i=0; i<numOfPubs; i++){
             samplePubs[i].stopPublishing(samplePubs[i].intervalId);
             // console.log(samplePubs[i].intervalId);
             }
-        }else{
-          console.log("errror")
-        }
+            samplePubs = null;
+            Client.messageCount[clientId] = 0;
     })
 
     client.on('disconnect', () => { 

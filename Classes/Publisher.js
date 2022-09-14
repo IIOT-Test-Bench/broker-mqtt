@@ -12,27 +12,30 @@ module.exports = class Publisher {
 
     startPublishing(publisherName, interval, clientId, topic) {
         let intervalId = setInterval(() => {
-            console.log(`${publisherName} - ${intervalId}: ${this.publishTopic(clientId, topic)}`);
-        }, interval * 1000);
+            this.publishTopic(clientId, topic);
+            // console.log(`${publisherName} - ${intervalId}: ${this.publishTopic(clientId, topic)}`);
+        }, interval);
         console.log("Started");
         return intervalId;
     }
 
     stopPublishing(intervalId) {
-        clearInterval(intervalId)
+        clearInterval(intervalId);
+        // console.log("Stopping the interval with the ID", intervalId);
     }
 
     publishTopic(clientId, pubTopic){
         const client = Client.getClient(clientId);
         const topic = pubTopic;
         const message = "Lets test the publish";
-        console.log("all published topics:",Client.allPublishedTopics());
+        // console.log("all published topics:",Client.allPublishedTopics());
         client.publish(topic, message, { qos: 0, retain: false }, (error) => {
             if (error) {
                 console.log(error);
             } else {
             Client.addPublishedTopic([ clientId, topic ]);
-            console.log("Another", Client.allPublishedTopics());
+            Client.addMessageCount(clientId);
+            // console.log("Another", Client.allPublishedTopics());
             }
         });
     }

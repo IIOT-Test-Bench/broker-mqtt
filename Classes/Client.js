@@ -1,6 +1,7 @@
 module.exports = class Client {
   static clientList = {};
   static totalClients = 0;
+  static messageCount = {};
   static publishedTopics = [];
   static subscribedTopics = [];
 
@@ -47,5 +48,15 @@ module.exports = class Client {
   static deleteClient(clientid) {
     delete this.clientList[clientid];
     --this.totalClients;
+  }
+
+  //Array storing the count of messages per each connected client
+  static addMessageCount(clientId) {
+    if(this.messageCount[clientId] >= 0){
+      this.messageCount[clientId] += 1;
+    }else{
+      this.messageCount[clientId] = 0;
+    }
+    
   }
 };
