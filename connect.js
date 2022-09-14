@@ -80,7 +80,7 @@ app.post("/publish", async (req, res) => {
       res.send(error);
     } else {
       Client.addPublishedTopic({ clientId: topic });
-      console.log("Another", Client.allPublishedTopics());
+      // console.log("Another", Client.allPublishedTopics());
       res.send(`${topic} published`);
     }
   });
@@ -129,32 +129,34 @@ app.post("/subscribe", (req, res) => {
       //Run subscribing simulation
       setTimeout(() => {
         let alreadyPublishedTopics = Client.allPublishedTopics();
-        console.log("alllllllrrreeeeeeaaaadyyyyy", alreadyPublishedTopics)
+        // console.log("alllllllrrreeeeeeaaaadyyyyy", alreadyPublishedTopics)
         for(let j=0; j<numOfSubs; j++){
           let subTopic = alreadyPublishedTopics[getRandomNumber(0, alreadyPublishedTopics.length)]; //Get a random topic from already published for the simulation
           sampleSubs[j] = new Subscribe(`Subl ${j}`, clientId, subTopic);
           // console.log(sampleSubs[j]);
-      }
+        }
+        //Emit subscribed topics
+        client.emit("topics", Client.allPublishedTopics());
       }, 4000);
 
       let receivedMessagesCount = 0;
       //listen for messages
       const listenForMsgs = Client.getClient(clientId);
       listenForMsgs.on('message', (topic, message) => {
-        console.log("The Topic" + topic + ":" + message);
+        // console.log("The Topic" + topic + ":" + message);
         receivedMessagesCount += 1;
         client.emit("received", `${receivedMessagesCount}`);
       });
 
       //send sample statistics
-     setInterval(() => {
+     let statsInterval = setInterval(() => {
       symbs = Object.getOwnPropertySymbols(client.conn.transport.socket._socket);
       bytesRead = client.conn.transport.socket._socket[symbs[11]];
       bytesWritten = client.conn.transport.socket._socket[symbs[12]]; 
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
       client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
       client.emit("sent", `${Client.messageCount[clientId]}`);
-      console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
+      // console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
       client.emit("netin", `${bytesRead}`);
       client.emit("netout", `${bytesWritten}`);
      }, 2000)
@@ -162,6 +164,7 @@ app.post("/subscribe", (req, res) => {
 
 
     client.on('stopSimulation', (data) => {
+      //clear interval function when simulation stops
       const {numOfPubs} = data;
           if(samplePubs){
             for(let i=0; i<numOfPubs; i++){
@@ -173,6 +176,7 @@ app.post("/subscribe", (req, res) => {
           }
             samplePubs = null;
             Client.messageCount[clientId] = 0;
+            clearInterval(statsInterval);
     })
 
     client.on('disconnect', () => { 

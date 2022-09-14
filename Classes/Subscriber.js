@@ -10,7 +10,7 @@ module.exports = class Subscribe {
         const client = Client.getClient(clientId);
         client.subscribe(topic, () => {
             Client.addSubscribedTopic([clientId, topic]);
-            console.log("Subscribed "+ subscriberName);
+            // console.log("Subscribed "+ subscriberName);
         });
         
     }

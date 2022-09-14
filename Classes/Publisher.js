@@ -15,7 +15,7 @@ module.exports = class Publisher {
             this.publishTopic(clientId, topic);
             // console.log(`${publisherName} - ${intervalId}: ${this.publishTopic(clientId, topic)}`);
         }, interval);
-        console.log("Started");
+        // console.log("Started");
         return intervalId;
     }
 
