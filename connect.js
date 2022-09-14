@@ -105,16 +105,18 @@ app.post("/subscribe", (req, res) => {
       clientId = data;
      });
 
-     let samplePubs = null;
+     let samplePubs = [];
 
      client.on('startSimulation', (data) => {
-      const {numOfPubs, interval, topicLevel} = data;
+      const {numOfPubs, pubInterval, pubTopicLevel} = data;
       let range = numOfPubs //Number of publishers
       samplePubs = new Array(range);
       for(let i=0; i<range; i++){
-        let pubTopic = generateTopic(4, topicLevel);
-        samplePubs[i] = new Publisher(`Publ ${i}`, interval, clientId, pubTopic);
+        let pubTopic = generateTopic(4, pubTopicLevel);
+        samplePubs[i] = new Publisher(`Publ ${i}`, pubInterval, clientId, pubTopic);
       }
+
+
       //send sample statistics
      setInterval(() => {
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
@@ -128,8 +130,10 @@ app.post("/subscribe", (req, res) => {
       const {numOfPubs} = data;
           if(samplePubs){
             for(let i=0; i<numOfPubs; i++){
+              console.log(numOfPubs);
+              console.log(Object.keys(samplePubs));
               samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-              // console.log(samplePubs[i].intervalId);
+              console.log(samplePubs[i].intervalId);
               }
           }
             samplePubs = null;
