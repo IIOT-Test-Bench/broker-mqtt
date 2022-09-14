@@ -183,7 +183,7 @@ app.post("/subscribe", (req, res) => {
       console.log("User Disconnected");
      });
 });
-server.listen(3042);
+server.listen(80);
 
 app.listen(Port, () => {
   console.log("App Running...");
