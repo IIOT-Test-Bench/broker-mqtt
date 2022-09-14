@@ -111,6 +111,10 @@ app.post("/subscribe", (req, res) => {
 
      let samplePubs = [];
      let sampleSubs = [];
+     let symbs = null;
+      let bytesRead = null;
+      let bytesWritten = null; 
+
 
      client.on('startSimulation', (data) => {
       //Receive parameters from the user
@@ -142,12 +146,17 @@ app.post("/subscribe", (req, res) => {
         client.emit("received", `${receivedMessagesCount}`);
       });
 
-
       //send sample statistics
      setInterval(() => {
+      symbs = Object.getOwnPropertySymbols(client.conn.transport.socket._socket);
+      bytesRead = client.conn.transport.socket._socket[symbs[11]];
+      bytesWritten = client.conn.transport.socket._socket[symbs[12]]; 
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
       client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
-      client.emit("sent", `${Client.messageCount[clientId]} `);
+      client.emit("sent", `${Client.messageCount[clientId]}`);
+      console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
+      client.emit("netin", `${bytesRead}`);
+      client.emit("netout", `${bytesWritten}`);
      }, 2000)
      })
 
