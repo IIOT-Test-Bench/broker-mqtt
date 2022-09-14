@@ -16,7 +16,7 @@ require("loadavg-windows");
 //Setup socket io on server
 const io = require("socket.io")(server, {
   cors: {
-    origin: 'https://iiot-test-bench-project.netlify.app',
+    origin: "https://iiot-test-bench-project.netlify.app",
     credentials: true,
   },
 });
@@ -27,7 +27,12 @@ const Subscribe = require("./Classes/Subscriber");
 
 // middlewares
 app.use(express.json());
-app.use(cors({ origin: 'https://iiot-test-bench-project.netlify.app', credentials: true }));
+app.use(
+  cors({
+    origin: "https://iiot-test-bench-project.netlify.app",
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
   const indexhtml = `
