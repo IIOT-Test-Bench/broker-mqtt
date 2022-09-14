@@ -1,6 +1,7 @@
 module.exports = class Client {
   static clientList = {};
   static totalClients = 0;
+  static messageCount = {};
   static publishedTopics = [];
   static subscribedTopics = [];
 
@@ -23,15 +24,20 @@ module.exports = class Client {
   }
 
   static allPublishedTopics() {
-    let topics = Object.values(this.publishedTopics);
+    let topics = [];
+    for(let elem of this.publishedTopics){
+      if(!topics.includes(elem[1])){
+        topics.push(elem[1]);
+      }
+    }
     return topics;
   }
-  static addPublishedTopic(clientAndTopicObject) {
-    this.publishedTopics.push(clientAndTopicObject);
+  static addPublishedTopic(clientAndTopic) {
+    this.publishedTopics.push(clientAndTopic);
   }
 
-  static addSubscribedTopic(clientAndTopicObject) {
-    this.subscribedTopics.push(clientAndTopicObject);
+  static addSubscribedTopic(clientAndTopic) {
+    this.subscribedTopics.push(clientAndTopic);
     console.log(this.subscribedTopics);
   }
 
@@ -42,5 +48,15 @@ module.exports = class Client {
   static deleteClient(clientid) {
     delete this.clientList[clientid];
     --this.totalClients;
+  }
+
+  //Array storing the count of messages per each connected client
+  static addMessageCount(clientId) {
+    if(this.messageCount[clientId] >= 0){
+      this.messageCount[clientId] += 1;
+    }else{
+      this.messageCount[clientId] = 0;
+    }
+    
   }
 };

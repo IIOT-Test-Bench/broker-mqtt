@@ -4,6 +4,7 @@ const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
+const {generateTopic} = require("./HelperFunctions/generateTopic");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const server = require("http").createServer();
@@ -92,45 +93,51 @@ app.post("/subscribe", (req, res) => {
 });
 
 //Simulation with websockets
-
+//Client used as the identity for the websocket client, MainClient to identify the main client connection to the broker
   io.on('connection', client => {
+
+    let clientId = null;
+
     client.emit('connectionStatus', {isConnected: true, status: "connected", msg:"User connected"});
     client.on('clientId', data => { 
       console.log("Received client Id: " + data);
-      const client = Client.getClient(data);
-      console.log(client);
+      // const client = Client.getClient(data);
+      clientId = data;
      });
 
-     let samplePubs = null;
+     let samplePubs = [];
 
      client.on('startSimulation', (data) => {
-      const {numOfPubs, interval, topicLevel} = data;
-      let range = 10
+      const {numOfPubs, pubInterval, pubTopicLevel} = data;
+      let range = numOfPubs //Number of publishers
       samplePubs = new Array(range);
       for(let i=0; i<range; i++){
-        samplePubs[i] = new Publisher(`Publ ${i}`, 1);
+        let pubTopic = generateTopic(4, pubTopicLevel);
+        samplePubs[i] = new Publisher(`Publ ${i}`, pubInterval, clientId, pubTopic);
       }
+
+
       //send sample statistics
      setInterval(() => {
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
-      client.emit("cpu-usage", `${(osu.cpu.loadavgTime() / 2) * 10} %`);
+      client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
+      client.emit("sent", `${Client.messageCount[clientId]} `);
      }, 2000)
      })
 
 
     client.on('stopSimulation', (data) => {
-      console.log(samplePubs);
       const {numOfPubs} = data;
-      console.log(numOfPubs)
-
-        if(samplePubs !== null){
-          for(let i=0; i<numOfPubs; i++){
-            samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-            // console.log(samplePubs[i].intervalId);
-            }
-        }else{
-          console.log("errror")
-        }
+          if(samplePubs){
+            for(let i=0; i<numOfPubs; i++){
+              console.log(numOfPubs);
+              console.log(Object.keys(samplePubs));
+              samplePubs[i].stopPublishing(samplePubs[i].intervalId);
+              console.log(samplePubs[i].intervalId);
+              }
+          }
+            samplePubs = null;
+            Client.messageCount[clientId] = 0;
     })
 
     client.on('disconnect', () => { 
