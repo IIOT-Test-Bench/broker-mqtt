@@ -32,12 +32,12 @@ module.exports = class Client {
     }
     return topics;
   }
-  static addPublishedTopic(clientAndTopicObject) {
-    this.publishedTopics.push(clientAndTopicObject);
+  static addPublishedTopic(clientAndTopic) {
+    this.publishedTopics.push(clientAndTopic);
   }
 
-  static addSubscribedTopic(clientAndTopicObject) {
-    this.subscribedTopics.push(clientAndTopicObject);
+  static addSubscribedTopic(clientAndTopic) {
+    this.subscribedTopics.push(clientAndTopic);
     console.log(this.subscribedTopics);
   }
 

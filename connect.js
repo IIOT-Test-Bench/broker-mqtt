@@ -93,6 +93,7 @@ app.post("/subscribe", (req, res) => {
 });
 
 //Simulation with websockets
+//Client used as the identity for the websocket client, MainClient to identify the main client connection to the broker
   io.on('connection', client => {
 
     let clientId = null;
@@ -125,11 +126,12 @@ app.post("/subscribe", (req, res) => {
 
     client.on('stopSimulation', (data) => {
       const {numOfPubs} = data;
-        
-          for(let i=0; i<numOfPubs; i++){
-            samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-            // console.log(samplePubs[i].intervalId);
-            }
+          if(samplePubs){
+            for(let i=0; i<numOfPubs; i++){
+              samplePubs[i].stopPublishing(samplePubs[i].intervalId);
+              // console.log(samplePubs[i].intervalId);
+              }
+          }
             samplePubs = null;
             Client.messageCount[clientId] = 0;
     })
