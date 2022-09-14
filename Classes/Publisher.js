@@ -14,7 +14,6 @@ module.exports = class Publisher {
     );
   }
 
-    //Set time in seconds
   startPublishing(publisherName, interval, clientId, topic) {
     let intervalId = setInterval(() => {
       this.publishTopic(clientId, topic);
