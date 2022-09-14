@@ -16,7 +16,7 @@ require("loadavg-windows");
 //Setup socket io on server
 const io = require("socket.io")(server, {
   cors: {
-    origin: '*',
+    origin: true,
     credentials: true,
   },
 });
@@ -27,7 +27,7 @@ const Subscribe = require("./Classes/Subscriber");
 
 // middlewares
 app.use(express.json());
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 
 app.get("/", (req, res) => {
   const indexhtml = `
