@@ -16,7 +16,7 @@ require("loadavg-windows");
 //Setup socket io on server
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://iiot-test-bench-project.netlify.app",
     credentials: true,
   },
 });
