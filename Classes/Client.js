@@ -55,7 +55,7 @@ module.exports = class Client {
     if(this.messageCount[clientId] >= 0){
       this.messageCount[clientId] += 1;
     }else{
-      this.messageCount[clientId] = 0;
+      this.messageCount[clientId] = 1;
     }
     
   }
