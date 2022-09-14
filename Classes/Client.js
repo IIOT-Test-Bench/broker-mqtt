@@ -16,7 +16,7 @@ module.exports = class Client {
   addClient(clientId, clientObj) {
     this.constructor.clientList[clientId] = clientObj;
     ++this.constructor.totalClients;
-    console.log(this.constructor);
+    // console.log(this.constructor);
   }
 
   static totalClientsNumber() {
@@ -38,7 +38,7 @@ module.exports = class Client {
 
   static addSubscribedTopic(clientAndTopic) {
     this.subscribedTopics.push(clientAndTopic);
-    console.log(this.subscribedTopics);
+    // console.log(this.subscribedTopics);
   }
 
   static getClient(clientid) {
@@ -55,7 +55,7 @@ module.exports = class Client {
     if(this.messageCount[clientId] >= 0){
       this.messageCount[clientId] += 1;
     }else{
-      this.messageCount[clientId] = 0;
+      this.messageCount[clientId] = 1;
     }
     
   }

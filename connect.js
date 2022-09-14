@@ -4,7 +4,9 @@ const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
 const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
-const {generateTopic} = require("./HelperFunctions/generateTopic");
+const {generateTopic} = require("./HelperFunctions/generateTopic"); //Get Random topic
+const {getRandomNumber} = require("./HelperFunctions/generateClientId"); //Get Random number
+
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const server = require("http").createServer();
@@ -20,6 +22,8 @@ const io = require("socket.io")(server, {
 });
 
 const cors = require("cors");
+//import subscriber class 
+const Subscribe = require("./Classes/Subscriber");
 
 // middlewares
 app.use(express.json());
@@ -76,7 +80,7 @@ app.post("/publish", async (req, res) => {
       res.send(error);
     } else {
       Client.addPublishedTopic({ clientId: topic });
-      console.log("Another", Client.allPublishedTopics());
+      // console.log("Another", Client.allPublishedTopics());
       res.send(`${topic} published`);
     }
   });
@@ -106,38 +110,73 @@ app.post("/subscribe", (req, res) => {
      });
 
      let samplePubs = [];
+     let sampleSubs = [];
+     let symbs = null;
+      let bytesRead = null;
+      let bytesWritten = null; 
+
 
      client.on('startSimulation', (data) => {
-      const {numOfPubs, pubInterval, pubTopicLevel} = data;
-      let range = numOfPubs //Number of publishers
-      samplePubs = new Array(range);
-      for(let i=0; i<range; i++){
+      //Receive parameters from the user
+      const {numOfPubs, pubInterval, pubTopicLevel, numOfSubs, subTopicLevel} = data;
+      samplePubs = new Array(numOfPubs);
+      //Run publishing simulation
+      for(let i=0; i<numOfPubs; i++){
         let pubTopic = generateTopic(4, pubTopicLevel);
         samplePubs[i] = new Publisher(`Publ ${i}`, pubInterval, clientId, pubTopic);
       }
 
+      //Run subscribing simulation
+      setTimeout(() => {
+        let alreadyPublishedTopics = Client.allPublishedTopics();
+        // console.log("alllllllrrreeeeeeaaaadyyyyy", alreadyPublishedTopics)
+        for(let j=0; j<numOfSubs; j++){
+          let subTopic = alreadyPublishedTopics[getRandomNumber(0, alreadyPublishedTopics.length)]; //Get a random topic from already published for the simulation
+          sampleSubs[j] = new Subscribe(`Subl ${j}`, clientId, subTopic);
+          // console.log(sampleSubs[j]);
+        }
+        //Emit subscribed topics
+        client.emit("topics", Client.allPublishedTopics());
+      }, 4000);
+
+      let receivedMessagesCount = 0;
+      //listen for messages
+      const listenForMsgs = Client.getClient(clientId);
+      listenForMsgs.on('message', (topic, message) => {
+        // console.log("The Topic" + topic + ":" + message);
+        receivedMessagesCount += 1;
+        client.emit("received", `${receivedMessagesCount}`);
+      });
 
       //send sample statistics
-     setInterval(() => {
+     let statsInterval = setInterval(() => {
+      symbs = Object.getOwnPropertySymbols(client.conn.transport.socket._socket);
+      bytesRead = client.conn.transport.socket._socket[symbs[11]];
+      bytesWritten = client.conn.transport.socket._socket[symbs[12]]; 
       client.emit("memory-usage", `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`);
       client.emit("cpu-usage", `${((osu.cpu.loadavgTime() / 2) * 10).toFixed(2)} %`);
-      client.emit("sent", `${Client.messageCount[clientId]} `);
+      client.emit("sent", `${Client.messageCount[clientId]}`);
+      // console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
+      client.emit("netin", `${bytesRead}`);
+      client.emit("netout", `${bytesWritten}`);
      }, 2000)
      })
 
 
     client.on('stopSimulation', (data) => {
+      //clear interval function when simulation stops
       const {numOfPubs} = data;
           if(samplePubs){
             for(let i=0; i<numOfPubs; i++){
-              console.log(numOfPubs);
-              console.log(Object.keys(samplePubs));
+              // console.log(numOfPubs);
+              // console.log(Object.keys(samplePubs));
               samplePubs[i].stopPublishing(samplePubs[i].intervalId);
-              console.log(samplePubs[i].intervalId);
+              // console.log(samplePubs[i].intervalId);
               }
           }
             samplePubs = null;
             Client.messageCount[clientId] = 0;
+            clearInterval(statsInterval);
     })
 
     client.on('disconnect', () => { 
