@@ -9,9 +9,21 @@ const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require("https").createServer(app).listen(Port);
+const fs = require('fs');
 const osu = require("node-os-utils");
 require("loadavg-windows");
+
+
+//add options for the https server creation
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+const server = require("https").createServer(options, function (req, res) {
+  res.writeHead(200);
+  res.end("hello world\n");
+}).listen(Port);
 
 //Setup socket io on server
 const io = require("socket.io")(server, {
