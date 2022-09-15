@@ -21,9 +21,9 @@ require("loadavg-windows");
 
 const socket = require('socket.io')
 
-const server = app.listen(Port);
+const server = app.listen(5000);
 
-let io = socket(server)
+let io = require('socket.io').listen(server);
 
 //import cors
 const cors = require("cors");
@@ -210,7 +210,7 @@ io.on("connection", (client) => {
   });
 });
 
-// server.listen(Port)
+server.listen(Port)
 
 app.listen(Port, () => {
   console.log("App Running...");
