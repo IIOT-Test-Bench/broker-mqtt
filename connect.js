@@ -2,8 +2,13 @@ const express = require("express");
 const app = express();
 const Port = process.env.PORT || 3001;
 const mqtt = require("mqtt");
+
+//import classes
 const Client = require("./Classes/Client");
 const Publisher = require("./Classes/Publisher");
+const Subscribe = require("./Classes/Subscriber");
+
+//import helper functions
 const { generateTopic } = require("./HelperFunctions/generateTopic"); //Get Random topic
 const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get Random number
 
@@ -12,21 +17,8 @@ const swaggerUi = require("swagger-ui-express");
 const fs = require('fs');
 const osu = require("node-os-utils");
 require("loadavg-windows");
-
-
-const server = require("https").createServer(app);
-
-//Setup socket io on server
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "https://iiot-test-bench-project.netlify.app",
-    credentials: true,
-  },
-});
-
+//import cors
 const cors = require("cors");
-//import subscriber class
-const Subscribe = require("./Classes/Subscriber");
 
 // middlewares
 app.use(express.json());
@@ -36,6 +28,13 @@ app.use(
     credentials: true,
   })
 );
+
+//Setup server/ socket connection
+const server = app.listen(Port);
+
+//Setup socket io on server
+const io = require("socket.io").listen(server);
+
 
 app.get("/", (req, res) => {
   const indexhtml = `
