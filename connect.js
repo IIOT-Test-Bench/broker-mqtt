@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
     origin: "https://iiot-test-bench-project.netlify.app",
     credentials: true,
   },
-}).listen(server);
+});
 
 const cors = require("cors");
 //import subscriber class
