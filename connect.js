@@ -9,7 +9,7 @@ const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require("http").createServer();
+const server = require("https").createServer();
 const osu = require("node-os-utils");
 require("loadavg-windows");
 
