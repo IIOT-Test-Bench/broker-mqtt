@@ -23,7 +23,7 @@ const options = {
 const server = require("https").createServer(options, function (req, res) {
   res.writeHead(200);
   res.end("hello world\n");
-}).listen(9000);
+})
 
 //Setup socket io on server
 const io = require("socket.io")(server, {
@@ -218,6 +218,8 @@ io.on("connection", (client) => {
     console.log("User Disconnected");
   });
 });
+
+server.listen(9000);
 
 app.listen(Port, () => {
   console.log("App Running...");
