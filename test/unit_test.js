@@ -11,7 +11,6 @@ describe("Unit Testing", () => {
     let randomClient = generateID(7);
     assert.isNotNull(randomClient);
     assert.isString(randomClient);
-    ass;
   });
 });
 
