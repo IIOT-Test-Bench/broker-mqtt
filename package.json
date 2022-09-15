@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node connect.js"
+    "start": "node connect.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
