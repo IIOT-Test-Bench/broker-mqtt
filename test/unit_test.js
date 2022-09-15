@@ -5,6 +5,8 @@ const {
   generateID,
   getRandomNumber,
 } = require("../HelperFunctions/generateClientId");
+const { generateMessage } = require("../HelperFunctions/generateMessage");
+const { generateTopic } = require("../HelperFunctions/generateTopic");
 
 describe("Unit Testing", () => {
   it("Should generate random client Id for users", () => {
@@ -21,4 +23,16 @@ describe("Unit Testing", () => {
     assert.isNumber(randomNumber);
     assert.isAtLeast(randomNumber, 0);
   });
+});
+
+describe("Unit Testing", () => {
+  it("Should generate messages", () => {
+    let wordLength = 2;
+    let numOfWords = 10;
+    assert.isNotNull(generateMessage());
+  });
+});
+
+describe("Unit Testing", () => {
+  it("Should generate Random Topics", () => {});
 });
