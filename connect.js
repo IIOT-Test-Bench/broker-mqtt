@@ -9,7 +9,7 @@ const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require("https").createServer();
+const server = require("https").createServer(app);
 const osu = require("node-os-utils");
 require("loadavg-windows");
 
@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
     origin: "https://iiot-test-bench-project.netlify.app",
     credentials: true,
   },
-});
+}).listen(server);
 
 const cors = require("cors");
 //import subscriber class
@@ -206,7 +206,7 @@ io.on("connection", (client) => {
     console.log("User Disconnected");
   });
 });
-server.listen(9000);
+server.listen(port);
 
 app.listen(Port, () => {
   console.log("App Running...");
