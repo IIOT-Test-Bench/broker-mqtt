@@ -17,7 +17,6 @@ describe("Unit Testing", () => {
 
 describe("Unit Testing", () => {
   it("Should generate Random numbers", () => {
-    assert.isNotNull(getRandomNumber);
     let randomNumber = getRandomNumber(1, 10);
     assert.isNotNull(randomNumber);
     assert.isNumber(randomNumber);
