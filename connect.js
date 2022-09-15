@@ -9,7 +9,7 @@ const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const server = require("https").createServer(app);
+const server = require("https").createServer(app).listen(Port);
 const osu = require("node-os-utils");
 require("loadavg-windows");
 
@@ -206,7 +206,6 @@ io.on("connection", (client) => {
     console.log("User Disconnected");
   });
 });
-server.listen(Port);
 
 app.listen(Port, () => {
   console.log("App Running...");
