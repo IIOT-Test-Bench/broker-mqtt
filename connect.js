@@ -14,13 +14,7 @@ const osu = require("node-os-utils");
 require("loadavg-windows");
 
 
-//add options for the https server creation
-const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-};
-
-const server = require("https").createServer(options);
+const server = require("https").createServer(app);
 
 //Setup socket io on server
 const io = require("socket.io")(server, {
