@@ -25,8 +25,13 @@ const cors = require("cors");
 //Setup server/ socket connection
 const server = require("https").createServer(app);
 
-//Setup socket io on server
-const io = require("socket.io").listen(server);
+ //Setup socket io on server
+ const io = require("socket.io")(server, {
+  cors: {
+    origin: "https://iiot-test-bench-project.netlify.app",
+    credentials: true,
+  },
+});
 
 // middlewares
 app.use(express.json());
