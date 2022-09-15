@@ -11,3 +11,10 @@ describe("Unit Testing", () => {
     assert.isNotNull(generateID);
   });
 });
+
+describe("Unit Testing", () => {
+  it("Should generate Random numbers", () => {
+    assert.isNotNull(getRandomNumber);
+    assert.isNumber(getRandomNumber);
+  });
+});
