@@ -19,19 +19,14 @@ const fs = require('fs');
 const osu = require("node-os-utils");
 require("loadavg-windows");
 
+const socket = require('socket.io')
+
+const server = app.listen(Port);
+
+let io = socket(server)
+
 //import cors
 const cors = require("cors");
-
-//Setup server/ socket connection
-const server = require("https").createServer(app);
-
- //Setup socket io on server
- const io = require("socket.io")(server, {
-  cors: {
-    origin: "https://iiot-test-bench-project.netlify.app",
-    credentials: true,
-  },
-});
 
 // middlewares
 app.use(express.json());
@@ -41,7 +36,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 app.get("/", (req, res) => {
   const indexhtml = `
@@ -216,7 +210,7 @@ io.on("connection", (client) => {
   });
 });
 
-server.listen(Port)
+// server.listen(Port)
 
 app.listen(Port, () => {
   console.log("App Running...");
