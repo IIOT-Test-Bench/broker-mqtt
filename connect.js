@@ -20,10 +20,7 @@ const options = {
   cert: fs.readFileSync('cert.pem')
 };
 
-const server = require("https").createServer(options, function (req, res) {
-  res.writeHead(200);
-  res.end("hello world\n");
-})
+const server = require("https").createServer(options);
 
 //Setup socket io on server
 const io = require("socket.io")(server, {
