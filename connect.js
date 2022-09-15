@@ -14,11 +14,19 @@ const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+
 const fs = require('fs');
 const osu = require("node-os-utils");
 require("loadavg-windows");
+
 //import cors
 const cors = require("cors");
+
+//Setup server/ socket connection
+const server = require("https").createServer(app);
+
+//Setup socket io on server
+const io = require("socket.io").listen(server);
 
 // middlewares
 app.use(express.json());
@@ -28,12 +36,6 @@ app.use(
     credentials: true,
   })
 );
-
-//Setup server/ socket connection
-const server = app.listen(Port);
-
-//Setup socket io on server
-const io = require("socket.io").listen(server);
 
 
 app.get("/", (req, res) => {
@@ -208,6 +210,8 @@ io.on("connection", (client) => {
     console.log("User Disconnected");
   });
 });
+
+server.listen(Port)
 
 app.listen(Port, () => {
   console.log("App Running...");
