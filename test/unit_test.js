@@ -11,8 +11,8 @@ const { generateTopic } = require("../HelperFunctions/generateTopic");
 describe("Unit Testing", () => {
   it("Should generate random client Id for users", () => {
     let randomClient = generateID(7);
-    assert.isNotNull(randomClient);
-    assert.isString(randomClient);
+    assert.isNotNull(randomClient, "Should not be null");
+    assert.isString(randomClient, "Should be a string");
   });
 });
 
@@ -30,9 +30,16 @@ describe("Unit Testing", () => {
     let wordLength = 2;
     let numOfWords = 10;
     assert.isNotNull(generateMessage());
+    assert.isString(generateMessage());
   });
 });
 
 describe("Unit Testing", () => {
-  it("Should generate Random Topics", () => {});
+  it("Should generate Random Topics", () => {
+    let topicLen = 2;
+    let topicLvl = 2;
+    assert.isNotNull(generateTopic());
+    assert.isString(generateTopic());
+    assert.isNotArray(generateTopic());
+  });
 });
