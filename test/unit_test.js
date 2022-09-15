@@ -8,13 +8,19 @@ const {
 
 describe("Unit Testing", () => {
   it("Should generate random client Id for users", () => {
-    assert.isNotNull(generateID);
+    let randomClient = generateID(7);
+    assert.isNotNull(randomClient);
+    assert.isString(randomClient);
+    ass;
   });
 });
 
 describe("Unit Testing", () => {
   it("Should generate Random numbers", () => {
     assert.isNotNull(getRandomNumber);
-    assert.isNumber(getRandomNumber);
+    let randomNumber = getRandomNumber(1, 10);
+    assert.isNotNull(randomNumber);
+    assert.isNumber(randomNumber);
+    assert.isAtLeast(randomNumber, 0);
   });
 });
