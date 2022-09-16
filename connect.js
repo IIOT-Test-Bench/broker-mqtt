@@ -23,7 +23,7 @@ require("loadavg-windows");
 const cors = require("cors");
 
 //Setup server/ socket connection
-const server = require("https").createServer(app);
+const server = require("http").createServer(app);
 
  //Setup socket io on server
  const io = require("socket.io")(server, {
