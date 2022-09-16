@@ -23,12 +23,12 @@ require("loadavg-windows");
 const cors = require("cors");
 
 //Setup server/ socket connection
-const server = require("https").createServer(app);
+const server = require("http").createServer(app);
 
  //Setup socket io on server
  const io = require("socket.io")(server, {
   cors: {
-    origin: "https://iiot-test-bench-project.netlify.app",
+    origin: "http://localhost:3000",
   }
 });
 
@@ -36,7 +36,7 @@ const server = require("https").createServer(app);
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://iiot-test-bench-project.netlify.app",
+    origin: true,
     credentials: true,
   })
 );
@@ -130,6 +130,7 @@ io.on("connection", (client) => {
   let symbs = null;
   let bytesRead = null;
   let bytesWritten = null;
+  let statsInterval = null;
 
   client.on("startSimulation", (data) => {
     //Receive parameters from the user
@@ -173,7 +174,7 @@ io.on("connection", (client) => {
     });
 
     //send sample statistics
-    let statsInterval = setInterval(() => {
+    statsInterval = setInterval(() => {
       symbs = Object.getOwnPropertySymbols(
         client.conn.transport.socket._socket
       );
@@ -215,7 +216,7 @@ io.on("connection", (client) => {
   });
 });
 
-server.listen(9000)
+server.listen(3042)
 
 app.listen(Port, () => {
   console.log("App Running...");
