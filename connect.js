@@ -216,7 +216,9 @@ io.on("connection", (client) => {
   });
 });
 
-server.listen(Port, () => {
+server.listen(9000)
+
+app.listen(Port, () => {
   console.log("App Running...");
 });
 
