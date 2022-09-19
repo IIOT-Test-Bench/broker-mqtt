@@ -28,7 +28,7 @@ const server = require("http").createServer(app);
  //Setup socket io on server
  const io = require("socket.io")(server, {
   cors: {
-    origin: "https://iiot-test-bench-project.netlify.app",
+    origin: "*",
   }
 });
 
@@ -36,7 +36,7 @@ const server = require("http").createServer(app);
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://iiot-test-bench-project.netlify.app",
+    origin: true,
     credentials: true,
   })
 );
@@ -215,9 +215,9 @@ io.on("connection", (client) => {
   });
 });
 
-server.listen(9000)
+// server.listen(9000)
 
-app.listen(Port, () => {
+server.listen(Port, () => {
   console.log("App Running...");
 });
 
