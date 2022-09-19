@@ -1,5 +1,6 @@
 const Client = require("./Client");
-const { generateTopic } = require("../HelperFunctions/generateTopic");
+const { generateMessage } = require("../HelperFunctions/generateMessage");
+const { getRandomNumber } = require("../HelperFunctions/generateClientId");
 
 module.exports = class Publisher {
   //Set time in seconds
@@ -36,7 +37,8 @@ module.exports = class Publisher {
   publishTopic(clientId, pubTopic) {
     const client = Client.getClient(clientId);
     const topic = pubTopic;
-    const message = "Lets test the publish";
+    //generate a random message to be published
+    const message = generateMessage(5, getRandomNumber(5, 15));
     // console.log("all published topics:",Client.allPublishedTopics());
     client.publish(topic, message, { qos: 0, retain: false }, (error) => {
       if (error) {
