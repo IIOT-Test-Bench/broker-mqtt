@@ -130,6 +130,7 @@ io.on("connection", (client) => {
   let symbs = null;
   let bytesRead = null;
   let bytesWritten = null;
+  let statsInterval = null;
 
   client.on("startSimulation", (data) => {
     //Receive parameters from the user
@@ -173,7 +174,7 @@ io.on("connection", (client) => {
     });
 
     //send sample statistics
-    let statsInterval = setInterval(() => {
+    statsInterval = setInterval(() => {
       symbs = Object.getOwnPropertySymbols(
         client.conn.transport.socket._socket
       );
@@ -191,6 +192,7 @@ io.on("connection", (client) => {
       // console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
       client.emit("netin", `${bytesRead}`);
       client.emit("netout", `${bytesWritten}`);
+      client.emit("connected-users", `${Client.totalClients}`)
     }, 2000);
   });
 

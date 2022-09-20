@@ -18,12 +18,12 @@ module.exports = class Publisher {
   startPublishing(publisherName, interval, clientId, topic) {
     let intervalId = setInterval(() => {
       this.publishTopic(clientId, topic);
-      console.log(
-        `${publisherName} - ${intervalId}: ${this.publishTopic(
-          clientId,
-          topic
-        )}`
-      );
+      // console.log(
+      //   `${publisherName} - ${intervalId}: ${this.publishTopic(
+      //     clientId,
+      //     topic
+      //   )}`
+      // );
     }, interval);
     console.log("Started");
     return intervalId;
