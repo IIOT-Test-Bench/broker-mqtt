@@ -1,0 +1,11 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0", 
+      "title": "IIOT Test Bench",
+      "description": "Conceptual design and construction of a scalable IIoT test bench in which the above points are tested and the results are visualized in a dashboard",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+}
