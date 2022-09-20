@@ -29,4 +29,29 @@
         "name": "Disconnect",
         "description": "Endpoint for disconnection to the broker"
       }
+    ],
+    "schemes": ["http","https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/connect": {
+          "post": {
+            "tags": ["Connect"],
+            "summary": "Connect a client to the broker",
+            "description": "Publish a message to a topic",
+            "parameters": [
+                 {
+                    "name": "Connect parameters",
+                    "in": "body",
+                    "description": "Host IP address, Client ID, username, password, timeout, Port number"
+                  }
+              ],
+              "produces": ["application/json"],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+        },
 }
