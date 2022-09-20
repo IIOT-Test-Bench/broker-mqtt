@@ -32,7 +32,6 @@ describe("Integration Test", () => {
         }
       });
   });
-
   it("Disconnect Client from broker", (done) => {
     chai
       .request(app)
