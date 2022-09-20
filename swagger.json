@@ -1,95 +1,115 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0", 
-      "title": "IIOT Test Bench",
-      "description": "Conceptual design and construction of a scalable IIoT test bench in which the above points are tested and the results are visualized in a dashboard",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "IIOT Test Bench",
+    "description": "Conceptual design and construction of a scalable IIoT test bench in which the above points are tested and the results are visualized in a dashboard",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "iiot-bench.herokuapp.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Connect",
+      "description": "Endpoint for main connection to the broker"
+    },
+
+    {
+      "name": "Publish",
+      "description": "Endpoint for sending message for the topic"
+    },
+    {
+      "name": "Subscribe",
+      "description": "Endpoint for subscribing to topics"
+    },
+    {
+      "name": "Disconnect",
+      "description": "Endpoint for disconnection to the broker"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/connect": {
+      "post": {
+        "tags": ["Connect"],
+        "summary": "Connect a client to the broker",
+        "description": "Publish a message to a topic",
+        "parameters": [
+          {
+            "name": "Connect parameters",
+            "in": "body",
+            "description": "Host IP address, Client ID, username, password, timeout, Port number"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
-    "host": "iiot-bench.herokuapp.com",
-    "basePath": "/",
-    "tags": [
-      {
-        "name": "Connect",
-        "description": "Endpoint for main connection to the broker"
-      },
-      
-      {
-        "name": "Publish",
-        "description": "Endpoint for sending message for the topic"
-      },
-      {
-        "name": "Subscribe",
-        "description": "Endpoint for subscribing to topics"
-      },
-      {
-        "name": "Disconnect",
-        "description": "Endpoint for disconnection to the broker"
-      }
-    ],
-    "schemes": ["http","https"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"],
-    "paths": {
-        "/connect": {
-          "post": {
-            "tags": ["Connect"],
-            "summary": "Connect a client to the broker",
-            "description": "Publish a message to a topic",
-            "parameters": [
-                 {
-                    "name": "Connect parameters",
-                    "in": "body",
-                    "description": "Host IP address, Client ID, username, password, timeout, Port number"
-                  }
-              ],
-              "produces": ["application/json"],
-            "responses": {
-              "200": {
-                "description": "OK"
-              }
-            }
+    "/publish": {
+      "post": {
+        "tags": ["Publish"],
+        "description": "Publish a message to a topic",
+        "parameters": [
+          {
+            "name": "Publish",
+            "in": "body",
+            "description": "Json containing client ID, topic, and message"
           }
-        },
-        "/publish": {
-            "post": {
-              "tags": ["Publish"],
-              "description": "Publish a message to a topic",
-              "parameters": [
-                {
-                  "name": "Publish",
-                  "in": "body",
-                  "description": "Json containing client ID, topic, and message"
-                }
-              ],
-              "produces": ["application/json"],
-              "responses": {
-                "200": {
-                  "description": "Message published to topic"
-                }
-              }
-            }
-          },
-          "/subscribe": {
-            "post": {
-              "tags": ["Subscribe"],
-              "description": "Publish a message to a topic",
-              "parameters": [
-                {
-                  "name": "Subscribe",
-                  "in": "body",
-                  "description": "Json containing client ID and topic"
-                }
-              ],
-              "produces": ["application/json"],
-              "responses": {
-                "200": {
-                  "description": "Successfully subscribed to a topic"
-                }
-              }
-            }
-          },
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Message published to topic"
+          }
+        }
+      }
+    },
+    "/subscribe": {
+      "post": {
+        "tags": ["Subscribe"],
+        "description": "Publish a message to a topic",
+        "parameters": [
+          {
+            "name": "Subscribe",
+            "in": "body",
+            "description": "Json containing client ID and topic"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully subscribed to a topic"
+          }
+        }
+      }
+    },
+    "/disconnect": {
+      "post": {
+        "tags": ["Disconnect"],
+        "description": "Adds a new visitor to the database",
+        "parameters": [
+          {
+            "name": "Disconnect",
+            "in": "body",
+            "description": "Json containing client ID"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Client successfully disconnected"
+          }
+        }
+      }
+    }
+  }
 }
