@@ -12,10 +12,12 @@ const Subscribe = require("./Classes/Subscriber");
 const { generateTopic } = require("./HelperFunctions/generateTopic"); //Get Random topic
 const { getRandomNumber } = require("./HelperFunctions/generateClientId"); //Get Random number
 
-const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerDocument = require("./swagger.json");
 const swaggerUi = require("swagger-ui-express");
 
-const fs = require('fs');
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const fs = require("fs");
 const osu = require("node-os-utils");
 require("loadavg-windows");
 
@@ -25,11 +27,11 @@ const cors = require("cors");
 //Setup server/ socket connection
 const server = require("http").createServer(app);
 
- //Setup socket io on server
- const io = require("socket.io")(server, {
+//Setup socket io on server
+const io = require("socket.io")(server, {
   cors: {
     origin: "*",
-  }
+  },
 });
 
 // middlewares
@@ -41,11 +43,14 @@ app.use(
   })
 );
 
-
 app.get("/", (req, res) => {
   const indexhtml = `
             <div style="margin-top: 10em;display: flex;align-items: center;justify-content: space-evenly;">
                 <h1 style="font-size: 4em;">IIOT <span style="color:#4e73df;">Test Bench</span></h1>
+                <a href="https://iiot-test-bench-project.netlify.app/docs">
+                  <button>Swagger Documentation</button>
+                </a>
+
             </div>
     `;
   res.send(indexhtml);
@@ -199,7 +204,7 @@ io.on("connection", (client) => {
       // console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
       client.emit("netin", `${bytesRead}`);
       client.emit("netout", `${bytesWritten}`);
-      client.emit("connected-users", `${connectedUsers}`)
+      client.emit("connected-users", `${connectedUsers}`);
     }, 2000);
   });
 
