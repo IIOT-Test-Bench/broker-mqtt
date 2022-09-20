@@ -111,5 +111,74 @@
         }
       }
     }
+  },
+  "definitions": {
+    "Connect": {
+      "required": [
+        "host",
+        "port number",
+        "clientId",
+        "username",
+        "password",
+        "timeout"
+      ],
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port number": {
+          "type": "string"
+        },
+        "clientId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "string"
+        }
+      }
+    },
+    "Publish": {
+      "required": ["clientId", "topic", "message"],
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "topic": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Subscribe": {
+      "required": ["clientId", "topic"],
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "topic": {
+          "type": "string"
+        }
+      }
+    },
+    "Disconnect": {
+      "required": ["clientId"],
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    }
   }
 }
