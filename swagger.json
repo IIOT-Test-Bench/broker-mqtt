@@ -54,4 +54,23 @@
             }
           }
         },
+        "/publish": {
+            "post": {
+              "tags": ["Publish"],
+              "description": "Publish a message to a topic",
+              "parameters": [
+                {
+                  "name": "Publish",
+                  "in": "body",
+                  "description": "Json containing client ID, topic, and message"
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                  "description": "Message published to topic"
+                }
+              }
+            }
+          }
 }
