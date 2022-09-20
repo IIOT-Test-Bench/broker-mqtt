@@ -131,6 +131,7 @@ io.on("connection", (client) => {
   let bytesRead = null;
   let bytesWritten = null;
   let statsInterval = null;
+  let connectedUsers = 0;
 
   client.on("startSimulation", (data) => {
     //Receive parameters from the user
@@ -180,6 +181,8 @@ io.on("connection", (client) => {
       );
       bytesRead = client.conn.transport.socket._socket[symbs[11]];
       bytesWritten = client.conn.transport.socket._socket[symbs[12]];
+      connectedUsers = Client.totalClientsNumber();
+
       client.emit(
         "memory-usage",
         `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`
@@ -192,7 +195,7 @@ io.on("connection", (client) => {
       // console.log(client.conn.transport.socket._socket[symbs[12]], symbs[12], symbs[11]);
       client.emit("netin", `${bytesRead}`);
       client.emit("netout", `${bytesWritten}`);
-      client.emit("connected-users", `${Client.totalClients}`)
+      client.emit("connected-users", `${connectedUsers}`)
     }, 2000);
   });
 

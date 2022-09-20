@@ -25,7 +25,7 @@ module.exports = class Publisher {
       //   )}`
       // );
     }, interval);
-    console.log("Started");
+    // console.log("Started");
     return intervalId;
   }
 
