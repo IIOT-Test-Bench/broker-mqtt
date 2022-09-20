@@ -47,6 +47,10 @@ app.get("/", (req, res) => {
   const indexhtml = `
             <div style="margin-top: 10em;display: flex;align-items: center;justify-content: space-evenly;">
                 <h1 style="font-size: 4em;">IIOT <span style="color:#4e73df;">Test Bench</span></h1>
+                <a href="https://iiot-test-bench-project.netlify.app/docs">
+                  <button>Swagger Documentation</button>
+                </a>
+
             </div>
     `;
   res.send(indexhtml);
