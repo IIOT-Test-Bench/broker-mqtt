@@ -132,6 +132,7 @@ io.on("connection", (client) => {
   let bytesWritten = null;
   let statsInterval = null;
   let connectedUsers = 0;
+  let receivedMessagesCount = null;
 
   client.on("startSimulation", (data) => {
     //Receive parameters from the user
@@ -165,7 +166,7 @@ io.on("connection", (client) => {
       client.emit("topics", Client.allPublishedTopics());
     }, 4000);
 
-    let receivedMessagesCount = 0;
+    receivedMessagesCount = 0;
     //listen for messages
     const listenForMsgs = Client.getClient(clientId);
     listenForMsgs.on("message", (topic, message) => {
@@ -176,11 +177,14 @@ io.on("connection", (client) => {
 
     //send sample statistics
     statsInterval = setInterval(() => {
+      //get the network bytes
       symbs = Object.getOwnPropertySymbols(
         client.conn.transport.socket._socket
       );
       bytesRead = client.conn.transport.socket._socket[symbs[11]];
       bytesWritten = client.conn.transport.socket._socket[symbs[12]];
+
+      //Emit number of connected users
       connectedUsers = Client.totalClientsNumber();
 
       client.emit(
@@ -212,6 +216,7 @@ io.on("connection", (client) => {
     }
     samplePubs = null;
     Client.messageCount[clientId] = 0;
+    receivedMessagesCount = 0;
     clearInterval(statsInterval);
   });
 
