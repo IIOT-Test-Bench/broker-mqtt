@@ -8,4 +8,25 @@
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
       }
+    },
+    "host": "iiot-bench.herokuapp.com",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Connect",
+        "description": "Endpoint for main connection to the broker"
+      },
+      
+      {
+        "name": "Publish",
+        "description": "Endpoint for sending message for the topic"
+      },
+      {
+        "name": "Subscribe",
+        "description": "Endpoint for subscribing to topics"
+      },
+      {
+        "name": "Disconnect",
+        "description": "Endpoint for disconnection to the broker"
+      }
 }
