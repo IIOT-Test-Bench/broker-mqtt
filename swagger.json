@@ -72,5 +72,24 @@
                 }
               }
             }
-          }
+          },
+          "/subscribe": {
+            "post": {
+              "tags": ["Subscribe"],
+              "description": "Publish a message to a topic",
+              "parameters": [
+                {
+                  "name": "Subscribe",
+                  "in": "body",
+                  "description": "Json containing client ID and topic"
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                  "description": "Successfully subscribed to a topic"
+                }
+              }
+            }
+          },
 }
