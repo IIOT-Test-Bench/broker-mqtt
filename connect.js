@@ -30,7 +30,7 @@ const server = require("http").createServer(app);
 //Setup socket io on server
 const io = require("socket.io")(server, {
   cors: {
-    origin: "*",
+    origin: "https://iiot-test-bench-project.netlify.app",
   },
 });
 
