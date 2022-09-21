@@ -32,10 +32,43 @@ describe("Integration Test", () => {
         }
       });
   });
-  it("Disconnect Client from broker", (done) => {
+  it("Publish to Broker", (done) => {
+    pubpara = {
+      clientId: parameters.clientId,
+      topic: "amalitech",
+      message: "IiOT Test Bench",
+    };
     chai
       .request(app)
-      .post("/disconnect")
-      .set("Content-Type", "application/json");
+      .post("/publish")
+      .send(pubpara)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .end((error, response) => {
+        if (error) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
+  it("Subscribe to Topic", (done) => {
+    subpara = {
+      clientId: parameters.clientId,
+      topic: pubpara.topic,
+    };
+    chai
+      .request(app)
+      .post("/subscribe")
+      .send(subpara)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .end((error, response) => {
+        if (error) {
+          done(err);
+        } else {
+          done();
+        }
+      });
   });
 });
