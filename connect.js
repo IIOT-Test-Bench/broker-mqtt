@@ -220,7 +220,7 @@ io.on("connection", (client) => {
       }
     }
     samplePubs = null;
-    Client.messageCount[clientId] = 0;
+    Client.resetMessageCount(clientId);
     receivedMessagesCount = 0;
     clearInterval(statsInterval);
   });
