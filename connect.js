@@ -174,7 +174,7 @@ io.on("connection", (client) => {
     receivedMessagesCount = 0;
     //listen for messages
     const listenForMsgs = Client.getClient(clientId);
-    listenForMsgs.on("message", (topic, message) => {
+    listenForMsgs?.on("message", (topic, message) => {
       // console.log("The Topic" + topic + ":" + message);
       receivedMessagesCount += 1;
       client.emit("received", `${receivedMessagesCount}`);

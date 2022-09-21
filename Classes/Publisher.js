@@ -39,16 +39,16 @@ module.exports = class Publisher {
     const topic = pubTopic;
     //generate a random message to be published
     const message = generateMessage(5, getRandomNumber(5, 15));
-    // console.log("all published topics:",Client.allPublishedTopics());
-    client.publish(topic, message, { qos: 0, retain: false }, (error) => {
-      if (error) {
-        console.log(error);
-      } else {
-        Client.addPublishedTopic([clientId, topic]);
-        Client.addMessageCount(clientId);
-        // console.log("Another", Client.allPublishedTopics());
-      }
-    });
+    if(client){
+      client.publish(topic, message, { qos: 0, retain: false }, (error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          Client.addPublishedTopic([clientId, topic]);
+          Client.addMessageCount(clientId);
+        }
+      });
+    }
   }
 };
 
