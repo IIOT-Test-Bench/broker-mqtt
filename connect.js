@@ -168,7 +168,7 @@ io.on("connection", (client) => {
         // console.log(sampleSubs[j]);
       }
       //Emit subscribed topics
-      client.emit("topics", Client.allPublishedTopics(clientId));
+      client.emit("topics", Client.clientPublishedTopics(clientId));
     }, 4000);
 
     receivedMessagesCount = 0;

@@ -23,11 +23,22 @@ module.exports = class Client {
     return this.totalClients;
   }
 
-  static allPublishedTopics(clientId) {
+  //get toptal published topics
+  static allPublishedTopics() {
     let topics = [];
     for(let elem of this.publishedTopics){
-      //Fetch all topics by a specific client
-      if(!topics.includes(elem[1]) && (elem[0] === clientId)){
+      if(!topics.includes(elem[1])){
+        topics.push(elem[1]);
+      }
+    }
+    return topics;
+  }
+
+  //Get all topics published by a specific client
+  static clientPublishedTopics(userId) {
+    let topics = [];
+    for(let elem of this.publishedTopics){
+      if(!topics.includes(elem[1]) && (elem[0] === userId)){
         topics.push(elem[1]);
       }
     }
