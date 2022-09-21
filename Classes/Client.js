@@ -23,10 +23,11 @@ module.exports = class Client {
     return this.totalClients;
   }
 
-  static allPublishedTopics() {
+  static allPublishedTopics(clientId) {
     let topics = [];
     for(let elem of this.publishedTopics){
-      if(!topics.includes(elem[1])){
+      //Fetch all topics by a specific client
+      if(!topics.includes(elem[1]) && (elem[0] === clientId)){
         topics.push(elem[1]);
       }
     }
