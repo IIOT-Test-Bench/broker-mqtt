@@ -235,7 +235,3 @@ io.on("connection", (client) => {
 server.listen(Port, () => {
   console.log("App Running...");
 });
-
-// Memory Usage Statistics
-// const used = process.memoryUsage().heapUsed / 1024 / 1024;
-// console.log(`Subscribe Memory Used ${Math.round(used * 100) / 100} MB`);
