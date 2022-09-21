@@ -71,4 +71,17 @@ describe("Integration Test", () => {
         }
       });
   });
+  it("Disconnect Client From Broker", (done) => {
+    chai
+      .request(app)
+      .post("/disconnect")
+      .send(parameters.clientId)
+      .end((error, response) => {
+        if (error) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
 });
