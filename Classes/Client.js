@@ -69,6 +69,12 @@ module.exports = class Client {
     }else{
       this.messageCount[clientId] = 1;
     }
-    
   }
+
+  static resetMessageCount(clientId) {
+    if(this.messageCount[clientId]){
+      this.messageCount[clientId] = 0;
+    }
+  }
+  
 };
