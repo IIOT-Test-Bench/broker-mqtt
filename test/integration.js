@@ -32,6 +32,7 @@ describe("Integration Test", () => {
         }
       });
   });
+  it("Should Publish to Broker", (done) => {
     pubpara = {
       clientId: parameters.clientId,
       topic: "amalitech",
