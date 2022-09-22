@@ -17,7 +17,7 @@ describe("Integration Test", () => {
     username: "emqx",
     password: "public",
   };
-  it("Connection to Broker", (done) => {
+  it("Should Connect to Broker", (done) => {
     chai
       .request(app)
       .post("/connect")
@@ -32,7 +32,6 @@ describe("Integration Test", () => {
         }
       });
   });
-  it("Publish to Broker", (done) => {
     pubpara = {
       clientId: parameters.clientId,
       topic: "amalitech",
@@ -52,7 +51,7 @@ describe("Integration Test", () => {
         }
       });
   });
-  it("Subscribe to Topic", (done) => {
+  it("Should Subscribe to Topic", (done) => {
     subpara = {
       clientId: parameters.clientId,
       topic: pubpara.topic,
@@ -71,7 +70,7 @@ describe("Integration Test", () => {
         }
       });
   });
-  it("Disconnect Client From Broker", (done) => {
+  it("Should Disconnect Client From Broker", (done) => {
     chai
       .request(app)
       .post("/disconnect")
