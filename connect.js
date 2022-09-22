@@ -59,19 +59,27 @@ app.get("/", (req, res) => {
 app.post("/connect", async (req, res) => {
   const { host, port, clientId, timeout, username, password } = req.body;
   const connectUrl = `mqtt://${host}:${port}`;
-  const client = mqtt.connect(connectUrl, {
-    clientId,
-    clean: true,
-    connectTimeout: timeout,
-    username: username,
-    password: password,
-    reconnectPeriod: 1000,
-  });
-  client.on("connect", () => {
-    new Client(clientId, client);
-    console.log(Client.totalClientsNumber());
-    res.send({ clientId, status: "connected", msg: "Successfully Connected" });
-  });
+  try{
+    const client = mqtt.connect(connectUrl, {
+      clientId,
+      clean: true,
+      connectTimeout: timeout,
+      username: username,
+      password: password,
+      reconnectPeriod: 1000,
+    });
+    if(client){
+      client.on("connect", () => {
+        new Client(clientId, client);
+        console.log(Client.totalClientsNumber());
+        res.send({ clientId, status: "connected", msg: "Successfully Connected" });
+      });
+    }else{
+      res.send({msg: "Could not connect, enter the right parameters"});
+    }
+  }catch(err){
+    res.send({msg: "Could not connect"});
+  }
 });
 
 app.post("/disconnect", async (req, res) => {
@@ -141,8 +149,7 @@ io.on("connection", (client) => {
 
   client.on("startSimulation", (data) => {
     //Receive parameters from the user
-    const { numOfPubs, pubInterval, pubTopicLevel, numOfSubs, subTopicLevel } =
-      data;
+    const { numOfPubs, pubInterval, pubTopicLevel, numOfSubs, subTopicLevel } = data;
     samplePubs = new Array(numOfPubs);
     //Run publishing simulation
     for (let i = 0; i < numOfPubs; i++) {
@@ -169,7 +176,7 @@ io.on("connection", (client) => {
       }
       //Emit subscribed topics
       client.emit("topics", Client.clientPublishedTopics(clientId));
-    }, 4000);
+    }, 2000);
 
     receivedMessagesCount = 0;
     //listen for messages
